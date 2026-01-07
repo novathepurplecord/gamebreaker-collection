@@ -10,6 +10,6 @@
 	"stepsPerBeat": 4,
 	"displayName": "Gamebreaker",
 	"needsVoices": true,
-	"beatsPerMeasure": 4,
+	"beatsPerMeasure": 2,
 	"bpm": 145
 }

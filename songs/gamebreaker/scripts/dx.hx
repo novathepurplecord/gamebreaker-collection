@@ -1,29 +1,34 @@
-var tracee:FlxSprite;
-var time:FunkinText;
-
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
+var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
+var glitch = new CustomShader("glitch");
 
 public var dxFocused = true;
 
 var bfX:Int = 529;
 var bfY:Int = 269;
 
+var dx2 = strumLines.members[0].characters[1];
+
 function create() {
     FlxG.resizeWindow(1024, 768);
-
-    camera.bgColor = 0x0;
+    camera.bgColor = 0;
 
     FlxG.cameras.insert(camBG, 0, false);
-    camBG.bgColor = 0x0;
+    camBG.bgColor = 0;
 
     FlxG.cameras.insert(camDX, 1, false);
-    camDX.bgColor = 0x0;
+    camDX.bgColor = 0;
     camDX.angle = 90;
     camDX.addShader(dxShader);
+
+    FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
+
+    dx2.visible = false;
+    dad.camera = dx2.camera = bf.camera = camChars;
 
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
@@ -43,31 +48,84 @@ function postCreate() {
 }
 
 function update(elapsed:Float) {
+    //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
 
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
+
+    camChars.scroll.set(camera.scroll.x, camera.scroll.y);
+    camChars.zoom = camera.zoom;
 }
 
-var targetBfScale:Float = 2;
+var targetBfScale:Int = 2;
+var targetHillScale:Float = 0.525;
+var targetTreeScale:Float = 0.64;
+
+var hill = stage.getSprite("hill");
+var trees = stage.getSprite("trees");
 
 function postUpdate() {
-    dxShader.iTime = Conductor.songPosition / 1000;
+    //shader itim
+    hotlineVHS.iTime = Conductor.songPosition / 1000;
+    glitch.iTime = Conductor.songPosition / 1000;
 
     //cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
+    //scale things
     bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
     bf.scale.set(bfScale, bfScale);
+    bf.setPosition(bfX * bfScale, bfY * bfScale);
 
-    bf.x = bfX * bfScale;
-    bf.y = bfY * bfScale;
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
+    hill.scale.set(hillScale, hillScale);
+    hill.y = hillScale;
+
+    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
+    trees.scale.set(treeScale, treeScale);
+    trees.y = 134 * treeScale; 
+}
+
+var bounce:Bool;
+var camRight:Bool = true;
+var poopFartShittay:Float = 0.75;
+
+function stepHit(_:Int) {
+    if (bounce && _ % 4 == 0) FlxTween.tween(camHUD, {y: 0}, 0.2, {ease: FlxEase.circOut});
+    if (bounce && _ % 4 == 2) FlxTween.tween(camHUD, {y: 10}, 0.2, {ease: FlxEase.sineIn});
+
+    switch (_) {
+        case 302:
+            dad.visible = (!dx2.visible = false);
+            dx2.shader = glitch;
+    }
 }
 
 function beatHit(_:Int) {
     switch (_) {
-        
+        case 140:
+            bounce = true;
+        case 156:
+            camBG.addShader(hotlineVHS);
+            camBG.flash(FlxColor.RED, 1);
+        case 204:
+            camGame.flash(FlxColor.RED, 1);
+    }
+
+    if (bounce && _ % 2 == 0){
+        if (!camRight){
+            poopFartShittay = -0.75;
+            camRight = true;
+        } else {
+            poopFartShittay = 0.75;
+            camRight = false;
+        }
+        camHUD.zoom += 0.04;
+        camHUD.angle = poopFartShittay;
+        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 }
 
@@ -90,7 +148,7 @@ function onEvent(_) {
     }
 }
 
-function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "game/notes/evil";
+function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "notes/sanicNote";
 
 function onCountdown(e) e.cancel();
 
