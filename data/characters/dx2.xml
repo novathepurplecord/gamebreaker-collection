@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character antialiasing="false" icon="dx2">
+<character antialiasing="false" icon="dx2" x="129.55" y="247.3">
 	<anim name="idle" anim="idle0"/>
 	<anim name="singDOWN" anim="singDOWN0" x="51" y="-85"/>
 	<anim name="singRIGHT" anim="singRIGHT0" x="11" y="-4"/>

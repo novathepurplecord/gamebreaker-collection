@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character icon="dx" scale="1.3" camy="-30" camx="-50">
+<character icon="dx" x="129.55" y="247.3">
 	<anim name="idle" anim="idle"/>
 	<anim name="singDOWN" anim="singDOWN" x="-23" y="-8"/>
 	<anim name="singRIGHT" anim="singRIGHT" x="-46" y="-10"/>

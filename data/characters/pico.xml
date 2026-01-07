@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character flipX="true" isPlayer="true" camx="-4400" camy="-940">
+<character flipX="true" isPlayer="true" x="0" y="0">
 	<anim name="idle" anim="idle"/>
 	<anim name="singDOWN" anim="singDOWN0" x="42" y="-38"/>
 	<anim name="singRIGHT" anim="singRIGHT0" x="-52" y="-24"/>
