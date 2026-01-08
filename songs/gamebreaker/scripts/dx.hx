@@ -81,32 +81,29 @@ function postUpdate() {
 
     hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
     hill.scale.set(hillScale, hillScale);
-    hill.y = hillScale;
+    hill.y = 1 * hillScale;
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
     trees.scale.set(treeScale, treeScale);
     trees.y = 134 * treeScale; 
 }
 
-var bounce:Bool;
-var camRight:Bool = true;
-var poopFartShittay:Float = 0.75;
-
 function stepHit(_:Int) {
-    if (bounce && _ % 4 == 0) FlxTween.tween(camHUD, {y: 0}, 0.2, {ease: FlxEase.circOut});
-    if (bounce && _ % 4 == 2) FlxTween.tween(camHUD, {y: 10}, 0.2, {ease: FlxEase.sineIn});
+    if (_ >= 560 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 0}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 560 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 10}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
         case 302:
-            dad.visible = (!dx2.visible = false);
+            dad.visible = !(dx2.visible = true);
             dx2.shader = glitch;
     }
 }
 
+var camRight:Bool = true;
+var poopFartShittay:Float = 0.75;
+
 function beatHit(_:Int) {
     switch (_) {
-        case 140:
-            bounce = true;
         case 156:
             camBG.addShader(hotlineVHS);
             camBG.flash(FlxColor.RED, 1);
@@ -114,7 +111,7 @@ function beatHit(_:Int) {
             camGame.flash(FlxColor.RED, 1);
     }
 
-    if (bounce && _ % 2 == 0){
+    if (_ >= 140 && _ % 2 == 0){
         if (!camRight){
             poopFartShittay = -0.75;
             camRight = true;

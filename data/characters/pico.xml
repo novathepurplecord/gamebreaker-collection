@@ -1,12 +1,1 @@
-<!DOCTYPE codename-engine-character>
-<character flipX="true" isPlayer="true" x="0" y="0">
-	<anim name="idle" anim="idle"/>
-	<anim name="singDOWN" anim="singDOWN0" x="42" y="-38"/>
-	<anim name="singRIGHT" anim="singRIGHT0" x="-52" y="-24"/>
-	<anim name="singLEFT" anim="singLEFT0" x="54" y="-40"/>
-	<anim name="singUP" anim="singUP0" x="-56" y="18"/>
-	<anim name="singUPmiss" anim="singUPmiss" x="-23" y="23"/>
-	<anim name="singDOWNmiss" anim="singDOWNmiss" x="52" y="-41"/>
-	<anim name="singLEFTmiss" anim="singLEFTmiss" x="94" y="-30"/>
-	<anim name="singRIGHTmiss" anim="singRIGHTmiss" x="-55" y="-26"/>
-</character>
+<!DOCTYPE codename-engine-character><character antialiasing="false" flipX="true" isPlayer="true" color="#66A5FF"><anim name="idle" anim="idle"/><anim name="singDOWN" anim="singDOWN0" x="98" y="-18"/><anim name="singRIGHT" anim="singRIGHT0" x="-74" y="-38"/><anim name="singLEFT" anim="singLEFT0" x="66" y="-36"/><anim name="singUP" anim="singUP0" x="-90" y="4"/><anim name="singUPmiss" anim="singUPmiss" x="-44" y="-8"/><anim name="singDOWNmiss" anim="singDOWNmiss" x="90" y="-70"/><anim name="singLEFTmiss" anim="singLEFTmiss" x="132" y="-54"/><anim name="singRIGHTmiss" anim="singRIGHTmiss" x="-84" y="-48"/></character>

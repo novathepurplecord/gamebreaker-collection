@@ -1,8 +1,1 @@
-<!DOCTYPE codename-engine-character>
-<character antialiasing="false" icon="dx2" x="180.55" y="247.3" sprite="2dx">
-	<anim name="idle" anim="idle0"/>
-	<anim name="singDOWN" anim="singDOWN0" x="51" y="-85"/>
-	<anim name="singRIGHT" anim="singRIGHT0" x="11" y="-4"/>
-	<anim name="singLEFT" anim="singLEFT0" x="186" y="2"/>
-	<anim name="singUP" anim="singUP0" x="48" y="35"/>
-</character>
+<!DOCTYPE codename-engine-character><character x="180.55" y="247.3" sprite="2dx" antialiasing="false" color="#30B0D1"><anim name="idle" anim="idle0"/><anim name="singDOWN" anim="singDOWN0" x="30" y="-96"/><anim name="singRIGHT" anim="singRIGHT0" x="-10" y="-6"/><anim name="singLEFT" anim="singLEFT0" x="196" y="24"/><anim name="singUP" anim="singUP0" x="34" y="72"/></character>

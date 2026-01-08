@@ -7,7 +7,6 @@ var time:FunkinBitmapText;
 
 var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
 
-
 function create() {
     FlxG.cameras.insert(camSonic, members.indexOf(camHUD), false).bgColor = 0;
 
@@ -24,32 +23,28 @@ function create() {
     lifeIcon.scale.set(4, 4);
 
     add(scoreNum = new Alphabet(scoreText.x + 370, scoreText.y, 'scor', 40)).camera = camSonic;
-    //scoreNum.alignment = AlphabetAlignment.RIGHT;
     add(timeNum = new Alphabet(timeText.x + 180, timeText.y, 'tim', 40)).camera = camSonic;
     add(misesNum = new Alphabet(missesText.x + 340, missesText.y, 'miss', 40)).camera = camSonic;
-    add(healthNum = new Alphabet(lifeIcon.x + 55, 820, 'heal', 40)).camera = camSonic;
+    add(healthNum = new Alphabet(lifeIcon.x + 60, 820, 'heal', 40)).camera = camSonic;
     add(percent = new Alphabet(0, 820, '%')).camera = camSonic;
 
-    for (num in [scoreNum, timeNum, misesNum, healthNum, percent]) {
-        num.scale.set(0.8, 0.8);
-    }
+    for (num in [scoreNum, timeNum, misesNum, healthNum, percent]) num.scale.set(0.8, 0.8);
 
 }
 
-var starterFlicking = false;
+function update() camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
+
+function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
 
 function postUpdate() {
     curTime = CoolUtil.addZeros(Std.int(Conductor.songPosition / 1000), 3);
     curHealth = Std.string(Std.int(health * 50));
 
-    if (misses > 0 && !starterFlicking) {
-        starterFlicking = true;
-        FlxFlicker.flicker(missesText, 0, 0.5, true, false);
-    }
-
     timeNum.text = curTime;
     scoreNum.text = songScore;
     misesNum.text = misses;
     healthNum.text = curHealth;
-    percent.x = (curHealth.length * 20) + 185;
+    percent.x = healthNum.x + healthNum.width + 10;
 }
+
+function onPlayerMiss() FlxFlicker.flicker(missesText, 0, 0.4, true, false);
