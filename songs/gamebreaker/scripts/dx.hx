@@ -13,7 +13,10 @@ var bfY:Int = 269;
 
 var dx2 = strumLines.members[0].characters[1];
 
+var tracee:FlxSprite;
+
 function create() {
+
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
@@ -32,10 +35,18 @@ function create() {
 
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
+
+    // add(tracee = new FlxSprite(0, 0, Paths.image('trace2'))).camera = camHUD;
+    // tracee.setGraphicSize(1280, 960);
+    // tracee.updateHitbox();
+    // //tracee.scale.set(0.72, 0.72);
+    // tracee.alpha = 0.5;
+    // tracee.screenCenter();
 }
 
 function postCreate() {
-    boyfriend.setPosition(bfX, bfY);
+    bf.setPosition(bfX, bfY);
+    bf.scale.set(2, 2);
 
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
@@ -48,6 +59,9 @@ function postCreate() {
 }
 
 function update(elapsed:Float) {
+
+    // if (controls.NOTE_LEFT_P) tracee.visible = !tracee.visible;
+
     //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
@@ -89,8 +103,9 @@ function postUpdate() {
 }
 
 function stepHit(_:Int) {
-    if (_ >= 560 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 0}, 0.2, {ease: FlxEase.circOut});
-    if (_ >= 560 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 10}, 0.2, {ease: FlxEase.sineIn});
+    //cool bounce
+    if (_ >= 560 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 560 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
         case 302:
@@ -111,6 +126,7 @@ function beatHit(_:Int) {
             camGame.flash(FlxColor.RED, 1);
     }
 
+    // cool bounce 2
     if (_ >= 140 && _ % 2 == 0){
         if (!camRight){
             poopFartShittay = -0.75;
@@ -129,7 +145,7 @@ function beatHit(_:Int) {
 function onEvent(_) {
     var e = _.event;
     if (e.name != "Camera Movement") return;
-    
+
     if (e.params[0] == 0) { //dx turn
         dxFocused = true;
         //targets
