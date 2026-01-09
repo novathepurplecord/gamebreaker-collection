@@ -35,9 +35,9 @@ function create() {
 
 }
 
-function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
+function update() if (curBeat >= 146) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
 
-function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
+function beatHit(_) if (_ >= 146 && _ % 2 == 0) camSonic.zoom += 0.03;
 
 function postUpdate() {
     var curTime = FlxStringUtil.formatTime(inst.time / 1000);

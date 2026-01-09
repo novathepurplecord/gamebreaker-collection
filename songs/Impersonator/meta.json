@@ -1,0 +1,15 @@
+{
+	"customValues": {},
+	"color": "#FF0000",
+	"opponentModeAllowed": true,
+	"icon": "dx",
+	"difficulties": [
+		"normal"
+	],
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"displayName": "Impersonator",
+	"needsVoices": true,
+	"beatsPerMeasure": 2,
+	"bpm": 175
+}
