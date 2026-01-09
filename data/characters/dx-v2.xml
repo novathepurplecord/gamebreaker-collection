@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character antialiasing="false" icon="dx-v2" x="150" y="230">
+	<anim name="idle" anim="idle"/>
+	<anim name="singLEFT" anim="singLEFT0" x="15" y="-2"/>
+	<anim name="singDOWN" anim="singDOWN0" x="-75" y="-15"/>
+	<anim name="singUP" anim="singUP0" x="7" y="24"/>
+	<anim name="singRIGHT" anim="singRIGHT0" x="-39" y="9"/>
+</character>
