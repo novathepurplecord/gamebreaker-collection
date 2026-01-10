@@ -15,7 +15,6 @@ var dx2 = strumLines.members[0].characters[1];
 var tracee:FlxSprite;
 
 function create() {
-
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
@@ -35,12 +34,12 @@ function create() {
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
 
-    add(tracee = new FlxSprite(0, 0, Paths.image('trace-v2'))).camera = camHUD;
-    tracee.setGraphicSize(1280, 960);
-    tracee.updateHitbox();
-    //tracee.scale.set(0.72, 0.72);
-    tracee.alpha = 0.5;
-    tracee.screenCenter();
+    // add(tracee = new FlxSprite(0, 0, Paths.image('trace-v2'))).camera = camHUD;
+    // tracee.setGraphicSize(1280, 960);
+    // tracee.updateHitbox();
+    // //tracee.scale.set(0.72, 0.72);
+    // tracee.alpha = 0.5;
+    // tracee.screenCenter();
 }
 
 function postCreate() {
@@ -59,7 +58,7 @@ function postCreate() {
 
 function update(elapsed:Float) {
 
-    if (controls.NOTE_LEFT_P) tracee.visible = !tracee.visible;
+    //if (controls.NOTE_LEFT_P) tracee.visible = !tracee.visible;
 
     //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);

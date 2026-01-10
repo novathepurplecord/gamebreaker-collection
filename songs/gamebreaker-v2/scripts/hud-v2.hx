@@ -2,9 +2,11 @@ import flixel.effects.FlxFlicker;
 import flixel.text.FlxBitmapText;
 import flixel.graphics.frames.FlxBitmapFont;
 import flixel.util.FlxStringUtil;
+import FunkinBitmapText;
 
 var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
-var sonic1Font = FlxBitmapFont.fromXNA(Assets.getBitmapData(Paths.image('hud/FlxBitmapFontSonic'), true, false), "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
+var sonic1Font = FlxBitmapFont.fromXNA(Assets.getBitmapData(Paths.image('hud/FlxBitmapFontSonic-v2'), true, false), "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
+var sonicHealthFont = FunkinBitmapText.fromMono('images/hud/FlxBitmapFontLifeCounter', "0123456789%");
 
 function create() {
     //new cam for hud
@@ -20,7 +22,7 @@ function create() {
     }
 
     //sonic life icon
-    add(lifeIcon = new FlxSprite(105, 842, Paths.image("hud/sonicLifeCounter"))).camera = camSonic;
+    add(lifeIcon = new FlxSprite(55, 800, Paths.image("hud/sonicLifeCounter-v2"))).camera = camSonic;
 
     //numbers (white ones)
     add(scoreNum = new FlxBitmapText(scoreText.x + 300, scoreText.y, 'scor', sonic1Font)).camera = camSonic;
@@ -28,7 +30,8 @@ function create() {
     add(misesNum = new FlxBitmapText(missesText.x + 285, missesText.y, 'miss', sonic1Font)).camera = camSonic;
 
     //healthbar
-    add(healthNum = new FlxBitmapText(lifeIcon.x + 100, 860, 'heal', sonic1Font)).camera = camSonic;
+    add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 855, 'heal', sonicHealthFont)).camera = camSonic;
+    //healthNum.scale.set(3, 3);
 
 }
 
