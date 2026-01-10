@@ -1,0 +1,211 @@
+importScript("data/scripts/yoshi");
+importScript("data/scripts/hud-v2");
+importScript("data/scripts/camFollow-v2");
+
+public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
+var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
+var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
+
+var dxShader = new CustomShader("dx");
+var hotlineVHS = new CustomShader("hotlineVHS");
+
+var pixelNotesForDad = true;
+
+public var dxFocused = true;
+
+var bfX:Int = 529;
+var bfY:Int = 269;
+
+var dx2 = strumLines.members[0].characters[1];
+var dx3 = strumLines.members[0].characters[2];
+
+function create() {
+    FlxG.resizeWindow(1024, 768);
+    camera.bgColor = 0;
+
+    FlxG.cameras.insert(camBG, 0, false);
+    camBG.bgColor = 0;
+
+    FlxG.cameras.insert(camDX, 1, false);
+    camDX.bgColor = 0;
+    camDX.angle = 90;
+    camDX.addShader(dxShader);
+
+    FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
+
+    dx2.visible = dx3.visible = false;
+    dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
+
+    FlxG.scaleMode.width = 1280;
+    FlxG.scaleMode.height = 960;
+}
+
+function postCreate() {
+    bf.setPosition(bfX, bfY);
+    bf.scale.set(2, 2);
+
+    camera.zoom = defaultCamZoom;
+    strumLines.members[0].camera = camDX;
+
+    //hidin everything
+    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
+    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
+
+    for (obj in [gf, comboGroup]) remove(obj);
+
+     for (i => strums in cpuStrums.members) cpuStrums.members[i].x -= 130;
+}
+
+function update(elapsed:Float) {
+    //scrolls camera setup
+    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
+    camBG.zoom = camera.zoom;
+
+    camDX.scroll.set(camera.scroll.x, camera.scroll.y);
+    camDX.zoom = camera.zoom;
+
+    camChars.scroll.set(camera.scroll.x, camera.scroll.y);
+    camChars.zoom = camera.zoom;
+}
+
+var targetBfScale:Int = 2;
+var targetDxBfScale:Int = 2;
+var targetHillScale:Float = 0.525;
+var targetTreeScale:Float = 0.64;
+
+var hill = stage.getSprite("hill");
+var trees = stage.getSprite("trees");
+
+function postUpdate() {
+    //shader itim
+    hotlineVHS.iTime = Conductor.songPosition / 1000;
+
+    //cam follo
+    camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
+
+    //scale things
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
+    bf.scale.set(bfScale, bfScale);
+    bf.setPosition(bfX * bfScale, bfY * bfScale);
+
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
+    hill.scale.set(hillScale, hillScale);
+    hill.y = 1 * hillScale;
+
+    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
+    trees.scale.set(treeScale, treeScale);
+    trees.y = 134 * treeScale; 
+}
+
+function stepHit(_:Int) {
+    //cool bounce
+    if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
+
+    switch (_) {
+        case 302: dad.visible = !(dx2.visible = true);
+        case 816: dx2.visible = !(dx3.visible = true);
+    }
+}
+
+var camRight:Bool = true;
+var poopFartShittay:Float = 0.75;
+
+function beatHit(_:Int) {
+    switch (_) {
+        case 156:
+            camBG.addShader(hotlineVHS);
+            camBG.flash(FlxColor.RED, 1);
+        case 204:
+            camGame.flash(FlxColor.RED, 1);
+            dxZoom = 0.6;
+            dxPos = [420, 0];
+            targetDxBfScale = 1;
+            bf.scrollFactor.y = 1.4;
+    }
+
+    // cool bounce 2
+    if (_ >= 140 && _ % 2 == 0){
+        if (!camRight){
+            poopFartShittay = -0.75;
+            camRight = true;
+        } else {
+            poopFartShittay = 0.75;
+            camRight = false;
+        }
+        camHUD.zoom += 0.04;
+        camHUD.angle = poopFartShittay;
+        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
+    }
+}
+
+function onEvent(_) {
+    var e = _.event;
+    if (e.name != "Camera Movement") return;
+
+    if (e.params[0] == 0) { //dx turn
+        dxFocused = true;
+        //targets
+        targetBfScale = targetDxBfScale;
+        targetHillScale = 0.525;
+        targetTreeScale = 0.64;
+    } else { //picos turn
+        dxFocused = false;
+        //targets
+        targetBfScale = 1;
+        targetHillScale = 0.56;
+        targetTreeScale = 0.66;
+    }
+}
+
+function onNoteCreation(e) if (e.strumLineID == 0) {
+    e.cancel();
+
+    var note = e.note;
+
+    //randomness
+    var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.WHITE];
+    note.color = colors[FlxG.random.int(0, colors.length - 1)];
+
+    var graphic = Paths.image('notes/dxNote');
+
+    if (note.isSustainNote) {
+        note.loadGraphic(graphic, true, 24, 24);
+        note.animation.add("hold", [e.strumID]);
+        note.animation.add("holdend", [e.strumID]);
+        note.alpha = 0.1;
+    } else {
+        var size = FlxG.random.int(56, 72);
+        note.loadGraphic(graphic, true, size, size);
+        note.animation.add("scroll", [e.strumID]);
+        note.scale.set(1.5, 1.5);
+    }
+}
+
+
+function onStrumCreation(event) if (event.player == 0) {
+
+    event.cancel();
+
+    var strum = event.strum;
+    strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
+    strum.animation.add("static", [event.strumID]);
+    strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
+    strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
+    strum.scale.set(1.5, 1.5);
+}
+
+function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
+
+function onCountdown(e) e.cancel();
+
+function onNoteHit(e) for (char in e.characters) {
+    e.enableCamZooming = false;
+    if (e.note.isSustainNote) {
+        e.animCancelled = true;
+        char.lastHit = Conductor.songPosition;
+    }
+}
+
+function destroy() FlxG.resizeWindow(1280, 720);

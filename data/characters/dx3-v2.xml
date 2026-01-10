@@ -1,8 +1,8 @@
 <!DOCTYPE codename-engine-character>
-<character antialiasing="false" icon="dx3-v2">
+<character x="120" y="-250" scale="1.4" antialiasing="false">
 	<anim name="idle" anim="idle" loop="true"/>
-	<anim name="singLEFT" anim="singLEFT0" x="-18" y="-38"/>
-	<anim name="singDOWN" anim="singDOWN0" x="-23" y="-207"/>
-	<anim name="singUP" anim="singUP0" x="14" y="24"/>
-	<anim name="singRIGHT" anim="singRIGHT0" x="-17" y="-29"/>
+	<anim name="singLEFT" anim="singLEFT0" x="-18" y="-38" fps="12" loop="true"/>
+	<anim name="singDOWN" anim="singDOWN0" x="-23" y="-207" fps="12" loop="true"/>
+	<anim name="singUP" anim="singUP0" x="14" y="24" fps="12" loop="true"/>
+	<anim name="singRIGHT" anim="singRIGHT0" x="-17" y="-29" fps="12" loop="true"/>
 </character>

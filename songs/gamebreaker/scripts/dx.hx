@@ -1,3 +1,7 @@
+importScript("data/scripts/yoshi");
+importScript("data/scripts/hud");
+importScript("data/scripts/camFollow");
+
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -12,8 +16,6 @@ var bfX:Int = 529;
 var bfY:Int = 269;
 
 var dx2 = strumLines.members[0].characters[1];
-
-var tracee:FlxSprite;
 
 function create() {
 
@@ -35,13 +37,6 @@ function create() {
 
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
-
-    // add(tracee = new FlxSprite(0, 0, Paths.image('trace2'))).camera = camHUD;
-    // tracee.setGraphicSize(1280, 960);
-    // tracee.updateHitbox();
-    // //tracee.scale.set(0.72, 0.72);
-    // tracee.alpha = 0.5;
-    // tracee.screenCenter();
 }
 
 function postCreate() {
@@ -56,12 +51,11 @@ function postCreate() {
     scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
 
     for (obj in [gf, comboGroup]) remove(obj);
+
+    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 134;
 }
 
-function update(elapsed:Float) {
-
-    // if (controls.NOTE_LEFT_P) tracee.visible = !tracee.visible;
-
+function update() {
     //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
@@ -162,6 +156,8 @@ function onEvent(_) {
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "notes/sanicNote";
+
+function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
 
 function onCountdown(e) e.cancel();
 

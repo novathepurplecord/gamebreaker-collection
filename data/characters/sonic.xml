@@ -1,0 +1,12 @@
+<!DOCTYPE codename-engine-character>
+<character antialiasing="false" flipX="true" isPlayer="true" color="#66A5FF">
+	<anim name="idle" x="-10" y="-3"/>
+	<anim name="singDOWN" x="98" y="-18"/>
+	<anim name="singRIGHT" x="-74" y="-38"/>
+	<anim name="singLEFT" x="66" y="-36"/>
+	<anim name="singUP" x="-90" y="4"/>
+	<anim name="singUPmiss" x="-44" y="-8"/>
+	<anim name="singDOWNmiss" x="90" y="-70"/>
+	<anim name="singLEFTmiss" x="132" y="-54"/>
+	<anim name="singRIGHTmiss" x="-84" y="-48"/>
+</character>

@@ -17,7 +17,7 @@ class FunkinBitmapText extends FlxBitmapText {
 		FlxBitmapFont.fromAngelCode(Assets.getBitmapData(Graphic + '.png'), Font + '.fnt');
 	}
 
-	public static inline function fromXNA(Graphic:String, Used:String, Color:FlxColor) FlxBitmapFont.fromXNA(Assets.getBitmapData(Graphic + '.png'), Used, Color);
+	public static inline function fromXNA(Graphic:String, Used:String) FlxBitmapFont.fromXNA(Assets.getBitmapData(Graphic + '.png', true, false), Used);
 
     public function new(X:Float = 0, Y:Float = 0, Text:String, lol:FlxBitmapFont, ?Size:Float = 32.0){
         super(X, Y, Text, lol);
