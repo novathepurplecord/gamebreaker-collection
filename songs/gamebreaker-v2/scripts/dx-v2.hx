@@ -9,8 +9,6 @@ var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-var pixelNotesForDad = true;
-
 public var dxFocused = true;
 
 var bfX:Int = 529;
@@ -23,11 +21,9 @@ function create() {
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
-    FlxG.cameras.insert(camBG, 0, false);
-    camBG.bgColor = 0;
+    FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
 
-    FlxG.cameras.insert(camDX, 1, false);
-    camDX.bgColor = 0;
+    FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.angle = 90;
     camDX.addShader(dxShader);
 
@@ -53,7 +49,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-     for (i => strums in cpuStrums.members) cpuStrums.members[i].x -= 130;
+    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 50;
 }
 
 function update(elapsed:Float) {
@@ -122,19 +118,14 @@ function beatHit(_:Int) {
             dxPos = [420, 0];
             targetDxBfScale = 1;
             bf.scrollFactor.y = 1.4;
+            for (i => strums in cpuStrums.members) cpuStrums.members[i].scrollFactor.set(1, 1);
     }
 
     // cool bounce 2
-    if (_ >= 140 && _ % 2 == 0){
-        if (!camRight){
-            poopFartShittay = -0.75;
-            camRight = true;
-        } else {
-            poopFartShittay = 0.75;
-            camRight = false;
-        }
+    if (_ >= 140 && _ % 2 == 0) {
+        camRight = !camRight;
         camHUD.zoom += 0.04;
-        camHUD.angle = poopFartShittay;
+        camHUD.angle = (camRight) ? 0.75 : -0.75;
         FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
@@ -185,18 +176,16 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
 
 
 function onStrumCreation(event) if (event.player == 0) {
-
     event.cancel();
 
     var strum = event.strum;
+    
     strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
     strum.animation.add("static", [event.strumID]);
     strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
     strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
     strum.scale.set(1.5, 1.5);
 }
-
-function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
 
 function onCountdown(e) e.cancel();
 

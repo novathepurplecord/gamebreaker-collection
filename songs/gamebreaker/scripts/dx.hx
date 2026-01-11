@@ -98,8 +98,8 @@ function postUpdate() {
 
 function stepHit(_:Int) {
     //cool bounce
-    if (_ >= 560 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
-    if (_ >= 560 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
+    if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
         case 302:
@@ -121,16 +121,10 @@ function beatHit(_:Int) {
     }
 
     // cool bounce 2
-    if (_ >= 140 && _ % 2 == 0){
-        if (!camRight){
-            poopFartShittay = -0.75;
-            camRight = true;
-        } else {
-            poopFartShittay = 0.75;
-            camRight = false;
-        }
+    if (_ >= 140 && _ % 2 == 0) {
+        camRight = !camRight;
         camHUD.zoom += 0.04;
-        camHUD.angle = poopFartShittay;
+        camHUD.angle = (camRight) ? 0.75 : -0.75;
         FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }

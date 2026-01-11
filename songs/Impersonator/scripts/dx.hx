@@ -1,5 +1,5 @@
 importScript("data/scripts/yoshi");
-importScript("data/scripts/hud-v2");
+importScript("data/scripts/hud");
 importScript("data/scripts/camFollow");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -126,18 +126,11 @@ function beatHit(_:Int) {
     }
 
     // cool bounce 2
-    if (_ >= 146 && _ % 2 == 0){
-        angleTwn?.cancel();
-        zoomTwn?.cancel();
-        if (!camRight){
-            poopFartShittay = -0.75;
-            camRight = true;
-        } else {
-            poopFartShittay = 0.75;
-            camRight = false;
-        }
+    if (_ >= 140 && _ % 2 == 0) {
+        for (twn in [angleTwn, zoomTwn]) twn?.cancel();
+        camRight = !camRight;
         camHUD.zoom += 0.04;
-        camHUD.angle = poopFartShittay;
+        camHUD.angle = (camRight) ? 0.75 : -0.75;
         angleTwn = FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         zoomTwn = FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
