@@ -42,10 +42,6 @@ function postCreate() {
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
 
-    //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
-
     for (obj in [gf, comboGroup]) remove(obj);
 
     for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 134;

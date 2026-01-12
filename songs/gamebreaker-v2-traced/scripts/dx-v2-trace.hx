@@ -41,10 +41,6 @@ function postCreate() {
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
 
-    //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
-
     for (obj in [gf, comboGroup]) remove(obj);
 
     for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 50;
@@ -110,10 +106,10 @@ function beatHit(_:Int) {
             camDX.addShader(hotlineVHS);
             camBG.flash(FlxColor.BLUE, 1);
         case 204:
-            camGame.flash(FlxColor.BLUE, 1);
+            camGame.flash(FlxColor.BLUE, 5);
             dxZoom = 0.5;
             dxPos = [320, 0];
-            targetDxBfScale = 0.2;
+            targetDxBfScale = 0.7;
             bf.scrollFactor.y = 2.4;
             for (i => strums in cpuStrums.members) cpuStrums.members[i].scrollFactor.set(3, 3);
     }

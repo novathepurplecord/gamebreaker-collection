@@ -17,7 +17,7 @@ function create() {
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(1.2, 1.2);
-        text.color = FlxColor.GREEN;
+        text.color = FlxColor.fromString("#cceb34");
     }
 
     //sonic life icon
@@ -29,7 +29,7 @@ function create() {
     scoreNum.alignment = 'left';
     scoreNum.angle = 90;
     add(timeNum = new FlxBitmapText(timeText.x + 175, timeText.y, 'tim', sonicHudFont)).camera = camSonic;
-    add(misesNum = new FlxBitmapText(missesText.x + 285, missesText.y, 'miss', sonicHudFont)).camera = camSonic;
+    add(misesNum = new FlxBitmapText(missesText.x + 285, missesText.y + 10, 'miss', sonicHudFont)).camera = camSonic;
 
     //healthbar
     add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 853, 'heal', sonicHealthFont)).camera = camSonic;
@@ -39,13 +39,13 @@ function create() {
 
 function postCreate() {
     //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
+    healthBar.visible = healthBarBG.visible = iconP1.visible = false;
+    scoreTxt.visible = missesTxt.visible = false;
 }
 
-function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
+function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1.03, 0.045);
 
-function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
+function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom -= 0.03;
 
 function postUpdate() {
     var time = Math.floor(inst.time / 1000);
@@ -59,5 +59,5 @@ function postUpdate() {
 
 function onPlayerMiss() FlxFlicker.flicker(missesText, 0, 0.15, true, false, () -> missesText.color = FlxColor.BLUE, () -> {
     missesText.visible = true;
-    missesText.color = (missesText.color == FlxColor.BLUE) ? FlxColor.YELLOW : FlxColor.BLUE;
+    missesText.color = (missesText.color == FlxColor.BLUE) ? FlxColor.fromString("#cceb34") : FlxColor.BLUE;
 });
