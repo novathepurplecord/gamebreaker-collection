@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-character>
-<character isPlayer="true" icon="pico" flipX="true">
+<character isPlayer="true" sprite="v2/pico-v2" icon="pico" flipX="true">
 	<anim name="idle" anim="idle" x="10" y="-5"/>
 	<anim name="singLEFT" anim="singLEFT0" x="121" y="-9" />
 	<anim name="singDOWN" anim="singDOWN0" x="195" y="-224" />

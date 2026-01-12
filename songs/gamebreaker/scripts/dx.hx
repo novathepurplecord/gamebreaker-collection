@@ -18,15 +18,11 @@ var bfY:Int = 269;
 var dx2 = strumLines.members[0].characters[1];
 
 function create() {
-
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
-    FlxG.cameras.insert(camBG, 0, false);
-    camBG.bgColor = 0;
-
-    FlxG.cameras.insert(camDX, 1, false);
-    camDX.bgColor = 0;
+    FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
+    FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.angle = 90;
     camDX.addShader(dxShader);
 
@@ -45,10 +41,6 @@ function postCreate() {
 
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
-
-    //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
 
     for (obj in [gf, comboGroup]) remove(obj);
 

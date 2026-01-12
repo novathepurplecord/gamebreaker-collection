@@ -1,6 +1,6 @@
 importScript("data/scripts/yoshi");
-importScript("data/scripts/hud-v2");
-importScript("data/scripts/camFollow-v2");
+importScript("data/scripts/v2/hud-v2");
+importScript("data/scripts/v2/camFollow-v2");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
@@ -22,7 +22,6 @@ function create() {
     camera.bgColor = 0;
 
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
-
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.angle = 90;
     camDX.addShader(dxShader);
@@ -43,13 +42,9 @@ function postCreate() {
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
 
-    //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
-
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 50;
+    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 334;
 }
 
 function update(elapsed:Float) {
@@ -175,15 +170,15 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
 }
 
 
-function onStrumCreation(event) if (event.player == 0) {
-    event.cancel();
+function onStrumCreation(e) if (e.player == 0) {
+    e.cancel();
 
-    var strum = event.strum;
+    var strum = e.strum;
     
     strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
-    strum.animation.add("static", [event.strumID]);
-    strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
-    strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
+    strum.animation.add("static", [e.strumID]);
+    strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
+    strum.animation.add("confirm", [12 + e.strumID, 16 + e.strumID], 24, false);
     strum.scale.set(1.5, 1.5);
 }
 
@@ -198,3 +193,5 @@ function onNoteHit(e) for (char in e.characters) {
 }
 
 function destroy() FlxG.resizeWindow(1280, 720);
+
+//function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);

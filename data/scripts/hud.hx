@@ -36,6 +36,12 @@ function create() {
 
 }
 
+function postCreate() {
+    //hidin everything
+    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
+    scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
+}
+
 function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
 
 function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;

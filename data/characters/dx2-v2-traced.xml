@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character x="-620" y="0" scale="0.7" sprite="v2/dx-v2-traced" antialiasing="false" icon="dx2-v2-traced">
+	<anim name="idle" anim="idle" x="-1" loop="true"/>
+	<anim name="singLEFT" anim="left" x="42" y="38"/>
+	<anim name="singDOWN" anim="down" x="-91" y="-5"/>
+	<anim name="singUP" anim="up" x="3" y="53"/>
+	<anim name="singRIGHT" anim="right" x="-71" y="108"/>
+</character>
