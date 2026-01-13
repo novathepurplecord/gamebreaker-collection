@@ -190,7 +190,6 @@ function onStrumCreation(event) {
 function onCountdown(e) e.cancel();
 
 function onNoteHit(e) for (char in e.characters) {
-    e.enableCamZooming = false;
     if (e.note.isSustainNote) {
         e.animCancelled = true;
         char.lastHit = Conductor.songPosition;

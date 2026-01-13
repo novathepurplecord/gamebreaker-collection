@@ -1,6 +1,5 @@
 <!DOCTYPE codename-engine-stage>
 <stage folder="stages/gamebreaker/" name="gamebreaker" zoom="1.3">
-	<girlfriend/>
 	<sprite sprite="bg" name="bg" x="-913" y="-1391" scrollx="0.3" scrolly="0.4"/>
 	<sprite sprite="hill" name="hill" x="-380" y="1" scale="0.525" scrollx="0.5" scrolly="0.3"/>
 	<sprite sprite="trees" name="trees" x="-913" y="134" scale="0.64" scrollx="0.6" scrolly="0.4"/>

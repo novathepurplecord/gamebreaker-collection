@@ -34,7 +34,6 @@ function create() {
     //healthbar
     add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 853, 'heal', sonicHealthFont)).camera = camSonic;
     healthNum.scale.set(0.9, 0.9);
-
 }
 
 function postCreate() {
@@ -50,7 +49,6 @@ function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom -= 0.03;
 function postUpdate() {
     var time = Math.floor(inst.time / 1000);
     var curHealth = Math.floor(health * 50);
-    
     timeNum.text = FlxStringUtil.formatTime(time);
     scoreNum.text = songScore;
     misesNum.text = misses;

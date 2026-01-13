@@ -1,6 +1,7 @@
 importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
+importScript("data/scripts/v2/dxMoveNotes");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
@@ -44,7 +45,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 334;
+    for (strums in cpuStrums.members) strums.x += 334;
 }
 
 function update(elapsed:Float) {
@@ -100,7 +101,6 @@ function stepHit(_:Int) {
 }
 
 var camRight:Bool = true;
-var poopFartShittay:Float = 0.75;
 
 function beatHit(_:Int) {
     switch (_) {
@@ -113,7 +113,7 @@ function beatHit(_:Int) {
             dxPos = [420, 0];
             targetDxBfScale = 1;
             bf.scrollFactor.y = 1.4;
-            for (i => strums in cpuStrums.members) cpuStrums.members[i].scrollFactor.set(1, 1);
+            for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
     }
 
     // cool bounce 2
@@ -126,23 +126,15 @@ function beatHit(_:Int) {
     }
 }
 
-function onEvent(_) {
-    var e = _.event;
+function onEvent(event) {
+    var e = event.event;
     if (e.name != "Camera Movement") return;
 
-    if (e.params[0] == 0) { //dx turn
-        dxFocused = true;
-        //targets
-        targetBfScale = targetDxBfScale;
-        targetHillScale = 0.525;
-        targetTreeScale = 0.64;
-    } else { //picos turn
-        dxFocused = false;
-        //targets
-        targetBfScale = 1;
-        targetHillScale = 0.56;
-        targetTreeScale = 0.66;
-    }
+    var isDX = e.params[0] == 0;
+    dxFocused = isDX;
+    targetBfScale = isDX ? targetDxBfScale : 1;
+    targetHillScale = isDX ? 0.525 : 0.56;
+    targetTreeScale = isDX ? 0.64 : 0.66;
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) {
