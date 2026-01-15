@@ -146,7 +146,7 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
         note.loadGraphic(graphic, true, 24, 24);
         note.animation.add("hold", [4 + e.strumID]);
         note.animation.add("holdend", [e.strumID]);
-    } else {;
+    } else {
         note.loadGraphic(graphic, true, 210, 210);
         note.animation.add("scroll", [20.2 + e.strumID]);
         note.scale.set(0.5, 0.5);
@@ -158,11 +158,11 @@ function onStrumCreation(e) if (e.player == 0) {
     e.cancel();
 
     var strum = e.strum;
-    strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
+    strum.loadGraphic(Paths.image('characters/dx'), true, 210, 210);
     strum.animation.add("static", [e.strumID]);
     strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
     strum.animation.add("confirm", [12 + e.strumID, 16 + e.strumID], 24, false);
-    strum.scale.set(1.5, 1.5);
+    strum.scale.set(0.5, 0.5);
 }
 
 function onCountdown(e) e.cancel();
