@@ -1,8 +1,8 @@
 <!DOCTYPE codename-engine-character>
-<character isPlayer="true" sprite="v2/pico-v2" icon="pico" flipX="true">
+<character sprite="v2/pico-v2" flipX="true" isPlayer="true" icon="pico">
 	<anim name="idle" anim="idle" x="10" y="-5"/>
-	<anim name="singLEFT" anim="singLEFT0" x="121" y="-9" />
-	<anim name="singDOWN" anim="singDOWN0" x="195" y="-224" />
-	<anim name="singUP" anim="singUP0" x="-36" y="211" />
-	<anim name="singRIGHT" anim="singRIGHT0" x="5" y="2" />
+	<anim name="singLEFT" anim="singLEFT0" x="121" y="-9" loop="true"/>
+	<anim name="singDOWN" anim="singDOWN0" x="195" y="-224" loop="true"/>
+	<anim name="singUP" anim="singUP0" x="-36" y="211" loop="true"/>
+	<anim name="singRIGHT" anim="singRIGHT0" x="5" y="2" loop="true"/>
 </character>

@@ -45,7 +45,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (strums in cpuStrums.members) strums.x += 334;
+    for (strums in cpuStrums.members) strums.x += 380;
 }
 
 function update(elapsed:Float) {
@@ -70,7 +70,7 @@ var trees = stage.getSprite("trees");
 
 function postUpdate() {
     //shader itim
-    hotlineVHS.iTime = Conductor.songPosition / 1000;
+    hotlineVHS.iTime = Conductor.songPosition * 0.001;
 
     //cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
@@ -103,6 +103,15 @@ function stepHit(_:Int) {
 var camRight:Bool = true;
 
 function beatHit(_:Int) {
+    // cool bounce 2
+    if (_ >= 140 && _ % 2 == 0) {
+        camRight = !camRight;
+        camHUD.zoom += 0.04;
+        camHUD.angle = (camRight) ? 0.75 : -0.75;
+        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
+    }
+
     switch (_) {
         case 156:
             camBG.addShader(hotlineVHS);
@@ -114,15 +123,6 @@ function beatHit(_:Int) {
             targetDxBfScale = 1;
             bf.scrollFactor.y = 1.4;
             for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
-    }
-
-    // cool bounce 2
-    if (_ >= 140 && _ % 2 == 0) {
-        camRight = !camRight;
-        camHUD.zoom += 0.04;
-        camHUD.angle = (camRight) ? 0.75 : -0.75;
-        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
-        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 }
 
@@ -166,7 +166,6 @@ function onStrumCreation(e) if (e.player == 0) {
     e.cancel();
 
     var strum = e.strum;
-    
     strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
     strum.animation.add("static", [e.strumID]);
     strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
@@ -176,14 +175,18 @@ function onStrumCreation(e) if (e.player == 0) {
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) for (char in e.characters) {
+function onNoteHit(e) {
     e.enableCamZooming = false;
+    if (e.noteType == "No Animation") e.animCancelled = true;
+}
+
+function onPlayerHit(e) for (char in e.characters) {
     if (e.note.isSustainNote) {
         e.animCancelled = true;
         char.lastHit = Conductor.songPosition;
     }
 }
 
-function destroy() FlxG.resizeWindow(1280, 720);
+function onPlayerMiss(e) e.animCancelled = true;
 
-//function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
+function destroy() FlxG.resizeWindow(1280, 720);

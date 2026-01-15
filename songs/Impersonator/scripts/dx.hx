@@ -70,8 +70,8 @@ var trees = stage.getSprite("trees");
 
 function postUpdate() {
     //shader itim
-    hotlineVHS.iTime = Conductor.songPosition / 1000;
-    glitch.iTime = Conductor.songPosition / 1000;
+    hotlineVHS.iTime = Conductor.songPosition * 0.001;
+    glitch.iTime = Conductor.songPosition * 0.001;
 
     //cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);

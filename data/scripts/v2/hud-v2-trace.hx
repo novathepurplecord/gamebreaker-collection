@@ -47,7 +47,7 @@ function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.
 function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom -= 0.03;
 
 function postUpdate() {
-    var time = Math.floor(inst.time / 1000);
+    var time = Math.floor(inst.time * 0.001);
     var curHealth = Math.floor(health * 50);
     timeNum.text = FlxStringUtil.formatTime(time);
     scoreNum.text = songScore;

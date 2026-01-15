@@ -44,7 +44,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 134;
+    for (strums in cpuStrums.members) strums.x += 134;
 }
 
 function update() {
@@ -68,8 +68,8 @@ var trees = stage.getSprite("trees");
 
 function postUpdate() {
     //shader itim
-    hotlineVHS.iTime = Conductor.songPosition / 1000;
-    glitch.iTime = Conductor.songPosition / 1000;
+    hotlineVHS.iTime = Conductor.songPosition * 0.001;
+    glitch.iTime = Conductor.songPosition * 0.001;
 
     //cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
@@ -101,17 +101,8 @@ function stepHit(_:Int) {
 }
 
 var camRight:Bool = true;
-var poopFartShittay:Float = 0.75;
 
 function beatHit(_:Int) {
-    switch (_) {
-        case 156:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
-        case 204:
-            camGame.flash(FlxColor.RED, 1);
-    }
-
     // cool bounce 2
     if (_ >= 140 && _ % 2 == 0) {
         camRight = !camRight;
@@ -120,25 +111,25 @@ function beatHit(_:Int) {
         FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
+
+    switch (_) {
+        case 156:
+            camBG.addShader(hotlineVHS);
+            camBG.flash(FlxColor.RED, 1);
+        case 204:
+            camGame.flash(FlxColor.RED, 1);
+    }
 }
 
-function onEvent(_) {
-    var e = _.event;
+function onEvent(event) {
+    var e = event.event;
     if (e.name != "Camera Movement") return;
 
-    if (e.params[0] == 0) { //dx turn
-        dxFocused = true;
-        //targets
-        targetBfScale = 2;
-        targetHillScale = 0.525;
-        targetTreeScale = 0.64;
-    } else { //picos turn
-        dxFocused = false;
-        //targets
-        targetBfScale = 1;
-        targetHillScale = 0.56;
-        targetTreeScale = 0.66;
-    }
+    var isDX = e.params[0] == 0;
+    dxFocused = isDX;
+    targetBfScale = isDX ? 2 : 1;
+    targetHillScale = isDX ? 0.525 : 0.56;
+    targetTreeScale = isDX ? 0.64 : 0.66;
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "notes/sanicNote";
@@ -147,6 +138,11 @@ function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) e.enableCamZooming = false;
+function onNoteHit(e) {
+    e.enableCamZooming = false;
+    if (e.noteType == "No Animation") e.animCancelled = true;
+}
+
+function onPlayerMiss(e) e.animCancelled = true;
 
 function destroy() FlxG.resizeWindow(1280, 720);

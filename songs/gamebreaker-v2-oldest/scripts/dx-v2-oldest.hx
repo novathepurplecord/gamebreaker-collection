@@ -1,9 +1,9 @@
-importScript("data/scripts/v2/yoshi-trace");
-importScript("data/scripts/v2/hud-v2-trace");
+importScript("data/scripts/yoshi");
+importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
-var camDX = new FlxCamera(-140, -190, 1880, 880, 1);
+var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
@@ -23,6 +23,7 @@ function create() {
 
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
+    camDX.angle = 90;
     camDX.addShader(dxShader);
 
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
@@ -43,7 +44,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 50;
+    for (strums in cpuStrums.members) strums.x += 380;
 }
 
 function update(elapsed:Float) {
@@ -71,14 +72,14 @@ function postUpdate() {
     hotlineVHS.iTime = Conductor.songPosition * 0.001;
 
     //cam follo
-    camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.06);
+    camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
     //scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.02);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 
-    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.04);
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
     hill.scale.set(hillScale, hillScale);
     hill.y = 1 * hillScale;
 
@@ -103,92 +104,74 @@ var camRight:Bool = true;
 function beatHit(_:Int) {
     switch (_) {
         case 156:
-            camDX.addShader(hotlineVHS);
-            camBG.flash(FlxColor.BLUE, 1);
+            camBG.addShader(hotlineVHS);
+            camBG.flash(FlxColor.RED, 1);
         case 204:
-            camGame.flash(FlxColor.BLUE, 5);
-            dxZoom = 0.5;
-            dxPos = [320, 0];
-            targetDxBfScale = 0.7;
-            bf.scrollFactor.y = 2.4;
-            for (i => strums in cpuStrums.members) cpuStrums.members[i].scrollFactor.set(3, 3);
+            camGame.flash(FlxColor.RED, 1);
+            dxZoom = 0.6;
+            dxPos = [420, 0];
+            targetDxBfScale = 1;
+            bf.scrollFactor.y = 1.4;
+            for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
     }
 
     // cool bounce 2
     if (_ >= 140 && _ % 2 == 0) {
         camRight = !camRight;
-        camHUD.zoom += 0.09;
-        camHUD.angle = (camRight) ? 0.85 : -10.65;
+        camHUD.zoom += 0.04;
+        camHUD.angle = (camRight) ? 0.75 : -0.75;
         FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
-        FlxTween.tween(camHUD, {zoom: 1}, 0.45, {ease: FlxEase.quadOut});
+        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 }
 
-function onEvent(_) {
-    var e = _.event;
+function onEvent(event) {
+    var e = event.event;
     if (e.name != "Camera Movement") return;
 
-    if (e.params[0] == 0) { //dx turn
-        dxFocused = true;
-        //targets
-        targetBfScale = targetDxBfScale;
-        targetHillScale = 1.525;
-        targetTreeScale = 0.64;
-    } else { //picos turn
-        dxFocused = false;
-        //targets
-        targetBfScale = 1;
-        targetHillScale = 0.46;
-        targetTreeScale = 0.96;
+    var isDX = e.params[0] == 0;
+    dxFocused = isDX;
+    targetBfScale = isDX ? targetDxBfScale : 1;
+    targetHillScale = isDX ? 0.525 : 0.56;
+    targetTreeScale = isDX ? 0.64 : 0.66;
+}
+
+function onNoteCreation(e) if (e.strumLineID == 0) {
+    e.cancel();
+
+    var note = e.note;
+    var graphic = Paths.image('characters/dx');
+
+    if (note.isSustainNote) {
+        note.loadGraphic(graphic, true, 24, 24);
+        note.animation.add("hold", [4 + e.strumID]);
+        note.animation.add("holdend", [e.strumID]);
+    } else {;
+        note.loadGraphic(graphic, true, 210, 210);
+        note.animation.add("scroll", [20.2 + e.strumID]);
+        note.scale.set(0.5, 0.5);
     }
 }
 
-function onNoteCreation(e) {
-    if (e.strumLineID == 0) {
-        e.cancel();
 
-        var note = e.note;
+function onStrumCreation(e) if (e.player == 0) {
+    e.cancel();
 
-        //randomness
-        var colors = [FlxColor.GREEN, FlxColor.PURPLE, FlxColor.WHITE];
-        note.color = colors[FlxG.random.int(0, colors.length - 1)];
-
-        var graphic = Paths.image('notes/dxNote');
-
-        if (note.isSustainNote) {
-            note.loadGraphic(graphic, true, 100, 100);
-            note.animation.add("hold", [e.strumID]);
-            note.animation.add("holdend", [e.strumID]);
-            note.alpha = 0.1;
-        } else {
-            var size = FlxG.random.int(56, 130);
-            note.loadGraphic(graphic, true, size, size);
-            note.animation.add("scroll", [e.strumID]);
-            note.scale.set(1.5, 1.5);
-        }
-    } else e.noteSprite = 'notes/xtdwg';
-}
-
-function onStrumCreation(event) {
-    if (event.player == 0) {
-        event.cancel();
-
-        var strum = event.strum;
-        strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
-        strum.animation.add("static", [event.strumID]);
-        strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
-        strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
-        strum.scale.set(1.5, 1.5);
-    } else event.sprite = 'notes/xtdwg';
+    var strum = e.strum;
+    strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
+    strum.animation.add("static", [e.strumID]);
+    strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
+    strum.animation.add("confirm", [12 + e.strumID, 16 + e.strumID], 24, false);
+    strum.scale.set(1.5, 1.5);
 }
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) for (char in e.characters) {
-    if (e.note.isSustainNote) {
-        e.animCancelled = true;
-        char.lastHit = Conductor.songPosition;
-    }
+function onNoteHit(e) {
+    e.enableCamZooming = false;
+    if (e.noteType == "No Animation") e.animCancelled = true;
 }
+
+function onPlayerMiss(e) e.animCancelled = true;
 
 function destroy() FlxG.resizeWindow(1280, 720);
