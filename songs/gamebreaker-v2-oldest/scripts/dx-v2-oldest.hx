@@ -1,6 +1,7 @@
 importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
+importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
@@ -9,8 +10,6 @@ var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-public var dxFocused = true;
-
 var bfX:Int = 529;
 var bfY:Int = 269;
 
@@ -18,9 +17,11 @@ var dx2 = strumLines.members[0].characters[1];
 var dx3 = strumLines.members[0].characters[2];
 
 function create() {
+    // window resizing
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
+    // cameras setup
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.angle = 90;
@@ -28,27 +29,30 @@ function create() {
 
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
 
+    // character cameras visibility etc
     dx2.visible = dx3.visible = false;
     dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
 
+    // scale mode
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
 }
 
+// post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
     bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
+    bf.scrollFactor.y = 1.3;
 
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
 
     for (obj in [gf, comboGroup]) remove(obj);
-
     for (strums in cpuStrums.members) strums.x += 380;
 }
 
+// camera stuff update
 function update(elapsed:Float) {
-    //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
 
@@ -68,20 +72,20 @@ var hill = stage.getSprite("hill");
 var trees = stage.getSprite("trees");
 
 function postUpdate() {
-    //shader itim
+    // shader itim
     hotlineVHS.iTime = Conductor.songPosition * 0.001;
 
-    //cam follo
+    // cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
-    //scale things
+    // scale things
     bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 
     hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
     hill.scale.set(hillScale, hillScale);
-    hill.y = 1 * hillScale;
+    hill.y = hillScale;
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
     trees.scale.set(treeScale, treeScale);
@@ -89,7 +93,7 @@ function postUpdate() {
 }
 
 function stepHit(_:Int) {
-    //cool bounce
+    // cool bounce
     if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
     if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
@@ -102,6 +106,7 @@ function stepHit(_:Int) {
 var camRight:Bool = true;
 
 function beatHit(_:Int) {
+    // events stuff
     switch (_) {
         case 156:
             camBG.addShader(hotlineVHS);
@@ -111,7 +116,6 @@ function beatHit(_:Int) {
             dxZoom = 0.6;
             dxPos = [420, 0];
             targetDxBfScale = 1;
-            bf.scrollFactor.y = 1.4;
             for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
     }
 
@@ -125,6 +129,9 @@ function beatHit(_:Int) {
     }
 }
 
+public var dxFocused = true;
+
+// event camera movement
 function onEvent(event) {
     var e = event.event;
     if (e.name != "Camera Movement") return;
@@ -136,6 +143,7 @@ function onEvent(event) {
     targetTreeScale = isDX ? 0.64 : 0.66;
 }
 
+// character note graphics
 function onNoteCreation(e) if (e.strumLineID == 0) {
     e.cancel();
 
@@ -153,7 +161,7 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
     }
 }
 
-
+// character strum graphics
 function onStrumCreation(e) if (e.player == 0) {
     e.cancel();
 
@@ -167,11 +175,6 @@ function onStrumCreation(e) if (e.player == 0) {
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) {
-    e.enableCamZooming = false;
-    if (e.noteType == "No Animation") e.animCancelled = true;
-}
-
-function onPlayerMiss(e) e.animCancelled = true;
+function onNoteHit(e) e.enableCamZooming = false;
 
 function destroy() FlxG.resizeWindow(1280, 720);

@@ -1,6 +1,7 @@
 importScript("data/scripts/yoshi");
 importScript("data/scripts/hud");
 importScript("data/scripts/camFollow");
+importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
@@ -81,7 +82,7 @@ function postUpdate() {
 
     hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
     hill.scale.set(hillScale, hillScale);
-    hill.y = 1 * hillScale;
+    hill.y = hillScale;
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
     trees.scale.set(treeScale, treeScale);
@@ -138,11 +139,6 @@ function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) {
-    e.enableCamZooming = false;
-    if (e.noteType == "No Animation") e.animCancelled = true;
-}
-
-function onPlayerMiss(e) e.animCancelled = true;
+function onNoteHit(e) e.enableCamZooming = false;
 
 function destroy() FlxG.resizeWindow(1280, 720);
