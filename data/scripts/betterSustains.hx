@@ -3,7 +3,7 @@ public var betterPicoSustains:Bool = false;
 
 function onNoteHit(e) if (e.noteType == "No Animation") e.animCancelled = true;
 
-function onPlayerMiss(e) e.animCancelled = true;
+function onPlayerMiss(e) if (!PlayState.SONG.meta.name == 'gamebreaker' || PlayState.SONG.meta.name == 'impersonator') e.animCancelled = true;
 
 function onPlayerHit(e) if (betterPicoSustains) {
     if (e.note.isSustainNote) {
