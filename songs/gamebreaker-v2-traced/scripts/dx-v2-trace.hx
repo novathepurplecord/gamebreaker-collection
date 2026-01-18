@@ -1,5 +1,5 @@
-importScript("data/scripts/v2/yoshi-trace");
-importScript("data/scripts/v2/hud-v2-trace");
+importScript("data/scripts/traced/yoshi-trace");
+importScript("data/scripts/traced/hud-v2-trace");
 importScript("data/scripts/v2/camFollow-v2");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -9,8 +9,6 @@ var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-public var dxFocused = true;
-
 var bfX:Int = 529;
 var bfY:Int = 269;
 
@@ -18,7 +16,6 @@ var dx2 = strumLines.members[0].characters[1];
 var dx3 = strumLines.members[0].characters[2];
 
 function create() {
-    FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
@@ -29,9 +26,6 @@ function create() {
 
     dx2.visible = dx3.visible = false;
     dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
-
-    FlxG.scaleMode.width = 1280;
-    FlxG.scaleMode.height = 960;
 }
 
 function postCreate() {
@@ -43,7 +37,7 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (i => strums in cpuStrums.members) cpuStrums.members[i].x += 50;
+    for (i => strums in cpuStrums.members) cpuStrums.members[i].x = 650;
 }
 
 function update(elapsed:Float) {
@@ -52,7 +46,7 @@ function update(elapsed:Float) {
     camBG.zoom = camera.zoom;
 
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
-    camDX.zoom = camera.zoom;
+    camDX.zoom = camera.zoom + 1;
 
     camChars.scroll.set(camera.scroll.x, camera.scroll.y);
     camChars.zoom = camera.zoom;
@@ -74,23 +68,28 @@ function postUpdate() {
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.06);
 
     //scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.02);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.06);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 
-    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.04);
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.06);
     hill.scale.set(hillScale, hillScale);
-    hill.y = 1 * hillScale;
+    hill.y = hillScale;
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
     trees.scale.set(treeScale, treeScale);
     trees.y = 134 * treeScale; 
+
+    dx2ScaleX = CoolUtil.fpsLerp(dx2.scale.x, 0.7, 0.06);
+    dx2ScaleY = CoolUtil.fpsLerp(dx2.scale.y, 0.7, 0.06);
+    dx2.scale.set(dx2ScaleX, dx2ScaleY);
 }
+
 
 function stepHit(_:Int) {
     //cool bounce
-    if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
-    if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
+    if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: -5}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: -15}, 0.2, {ease: FlxEase.bounceIn});
 
     switch (_) {
         case 302: dad.visible = !(dx2.visible = true);
@@ -119,28 +118,29 @@ function beatHit(_:Int) {
         camRight = !camRight;
         camHUD.zoom += 0.09;
         camHUD.angle = (camRight) ? 0.85 : -10.65;
-        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.bounceOut});
         FlxTween.tween(camHUD, {zoom: 1}, 0.45, {ease: FlxEase.quadOut});
+    }
+
+    if (_ >= 140) {
+        //dx2.scale.set(camRight ? 1.5 : 0.5, camRight ? 0.5 : 1.5);
+        dx2.scale.x += camRight ? 0.5 : -0.5;
+        //dx2.scale.y += camRight ? -0.5 : 0.5;
     }
 }
 
-function onEvent(_) {
-    var e = _.event;
+public var dxFocused = true;
+
+// event camera movement
+function onEvent(event) {
+    var e = event.event;
     if (e.name != "Camera Movement") return;
 
-    if (e.params[0] == 0) { //dx turn
-        dxFocused = true;
-        //targets
-        targetBfScale = targetDxBfScale;
-        targetHillScale = 1.525;
-        targetTreeScale = 0.64;
-    } else { //picos turn
-        dxFocused = false;
-        //targets
-        targetBfScale = 1;
-        targetHillScale = 0.46;
-        targetTreeScale = 0.96;
-    }
+    var isDX = e.params[0] == 0;
+    dxFocused = isDX;
+    targetBfScale = isDX ? targetDxBfScale : 1;
+    targetHillScale = isDX ? 0.525 : 0.56;
+    targetTreeScale = isDX ? 0.64 : 0.66;
 }
 
 function onNoteCreation(e) {
@@ -166,7 +166,10 @@ function onNoteCreation(e) {
             note.animation.add("scroll", [e.strumID]);
             note.scale.set(1.5, 1.5);
         }
-    } else e.noteSprite = 'notes/xtdwg';
+    } else {
+        // other players notes
+        e.noteSprite = 'notes/xtdwg';
+    }
 }
 
 function onStrumCreation(event) {
@@ -174,21 +177,18 @@ function onStrumCreation(event) {
         event.cancel();
 
         var strum = event.strum;
+
         strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
         strum.animation.add("static", [event.strumID]);
         strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
         strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
         strum.scale.set(1.5, 1.5);
-    } else event.sprite = 'notes/xtdwg';
+    } else {
+        // other players strum
+        event.sprite = 'notes/xtdwg';
+    }
 }
 
 function onCountdown(e) e.cancel();
-
-function onNoteHit(e) for (char in e.characters) {
-    if (e.note.isSustainNote) {
-        e.animCancelled = true;
-        char.lastHit = Conductor.songPosition;
-    }
-}
 
 function destroy() FlxG.resizeWindow(1280, 720);

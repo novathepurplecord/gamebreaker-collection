@@ -2,6 +2,7 @@ importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/v2/dxMoveNotes");
+importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
@@ -31,6 +32,7 @@ function create() {
 
     dx2.visible = dx3.visible = false;
     dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
+    betterPicoSustains = true; // from betterSustains.hx
 
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
@@ -39,6 +41,7 @@ function create() {
 function postCreate() {
     bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
+    bf.scrollFactor.y = 1.3;
 
     camera.zoom = defaultCamZoom;
     strumLines.members[0].camera = camDX;
@@ -82,7 +85,7 @@ function postUpdate() {
 
     hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
     hill.scale.set(hillScale, hillScale);
-    hill.y = 1 * hillScale;
+    hill.y = hillScale;
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
     trees.scale.set(treeScale, treeScale);
@@ -118,10 +121,9 @@ function beatHit(_:Int) {
             camBG.flash(FlxColor.RED, 1);
         case 204:
             camGame.flash(FlxColor.RED, 1);
-            dxZoom = 0.6;
-            dxPos = [420, 0];
+            dxZoom = 0.6; // from camFollow-v2
+            dxPos = [420, 0]; // from camFollow-v2
             targetDxBfScale = 1;
-            bf.scrollFactor.y = 1.4;
             for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
     }
 }
@@ -175,18 +177,6 @@ function onStrumCreation(e) if (e.player == 0) {
 
 function onCountdown(e) e.cancel();
 
-function onNoteHit(e) {
-    e.enableCamZooming = false;
-    if (e.noteType == "No Animation") e.animCancelled = true;
-}
-
-function onPlayerHit(e) for (char in e.characters) {
-    if (e.note.isSustainNote) {
-        e.animCancelled = true;
-        char.lastHit = Conductor.songPosition;
-    }
-}
-
-function onPlayerMiss(e) e.animCancelled = true;
+function onNoteHit(e) e.enableCamZooming = false;
 
 function destroy() FlxG.resizeWindow(1280, 720);
