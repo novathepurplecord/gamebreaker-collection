@@ -28,8 +28,8 @@ function create() {
     add(misesNum = new FlxBitmapText(missesText.x + 285, missesText.y, 'miss', sonicHudFont)).camera = camSonic;
 
     //healthbar
-    add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 853, 'heal', sonicHealthFont)).camera = camSonic;
-    healthNum.scale.set(0.9, 0.9);
+    add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 852, 'heal', sonicHealthFont)).camera = camSonic;
+    healthNum.scale.set(0.95, 0.95);
 }
 
 function postCreate() {

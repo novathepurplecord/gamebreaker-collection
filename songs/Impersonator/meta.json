@@ -8,7 +8,7 @@
 	],
 	"coopAllowed": true,
 	"stepsPerBeat": 4,
-	"displayName": "Impersonator",
+	"displayName": "impersonator",
 	"needsVoices": true,
 	"beatsPerMeasure": 2,
 	"bpm": 175

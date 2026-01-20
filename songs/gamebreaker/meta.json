@@ -8,7 +8,7 @@
 	"icon": "face",
 	"coopAllowed": false,
 	"stepsPerBeat": 4,
-	"displayName": "Gamebreaker",
+	"displayName": "gamebreaker",
 	"needsVoices": true,
 	"beatsPerMeasure": 2,
 	"bpm": 145
