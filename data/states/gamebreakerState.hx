@@ -12,9 +12,9 @@ var realBreakings:FlxSpriteGroup;
 
 static var curSelected:String;
 
-var dxBackdropCam = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
+var dxBackdropCam:FlxCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
-var fishEye = new CustomShader("fisheye");
+var fishEye:CustomShader = new CustomShader("fisheye");
 
 function create() {
     FlxG.mouse.visible = true;
@@ -42,8 +42,7 @@ function create() {
 
     for (i => songName in gameBreakings) {
         add(songName = new FlxSprite(0, 0, Paths.image('previews/' + songName)));
-        songName.setGraphicSize(500, 400);
-        songName.updateHitbox();
+        CoolUtil.setSpriteSize(songName, 500, 400);
         songName.x = 110 + (i * 550);
         songName.screenCenter(FlxAxes.Y);
         realBreakings.add(songName);
@@ -67,8 +66,10 @@ function update() {
     for (i => obj in realBreakings.members) {
         if (FlxG.mouse.overlaps(obj)) {
             obj.setGraphicSize(520, 420);
-            curSelected = gameBreakings[i];
-            if (FlxG.mouse.justPressed) superOpenSubState('selectThingy');
+            if (FlxG.mouse.justPressed) {
+                curSelected = gameBreakings[i];
+                superOpenSubState('selectThingy');
+            }
         }
         else obj.setGraphicSize(500, 400);
     }
@@ -85,13 +86,18 @@ function update() {
     dxBackBackdrop.velocity.set(targetVelDxBack, targetVelDxBack);
 
     FlxG.camera.zoom = CoolUtil.fpsLerp(FlxG.camera.zoom, 1, 0.1);
+    dxBackdropCam.zoom = FlxG.camera.zoom;
 }
 
 function beatHit(_:Int) {
-    targetVelDxBack -= 200;
+    targetVelDxBack -= 300;
     (_ % 2 == 0) ? FlxG.camera.zoom += 0.02 : FlxG.camera.zoom -= 0.02;
-};
+    if (_ == 32) FlxTween.tween(dxBackBackdrop, {angle: 90}, 1, {ease: FlxEase.sineOut, type: FlxTween.PINGPONG, delay: 1});
+}
+
 
 function superOpenSubState(_:Int) {
     openSubState(new ModSubState(_));
+    CoolUtil.playMenuSFX(1);
+    persistentUpdate = !(persistentDraw = true);
 }

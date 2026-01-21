@@ -9,6 +9,8 @@ var curSelectedSong:Int = 0;
 
 var selectCam = new FlxCamera();
 
+var wiggleShader = new CustomShader('wiggle');
+
 function create() {
     var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/FlxBitmapFontSonic-v2', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
     FlxG.cameras.add(selectCam, false).bgColor = 0;
@@ -21,6 +23,8 @@ function create() {
     add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + songVersions[curSelected][curSelectedSong], sonicHudFont)).screenCenter();
     selectText.scale.set(0.8, 0.8);
     selectText.camera = selectCam;
+
+    selectCam.addShader(wiggleShader);
 }
 
 function update() {
@@ -40,6 +44,8 @@ function update() {
         close();
         (curSelected == 'gamebreaker') ? enterSong(songVersions[curSelected][curSelectedSong].toLowerCase()) : enterSong(curSelected + '-' + songVersions[curSelected][curSelectedSong].toLowerCase());
     }
+
+    wiggleShader.iTime = Conductor.songPosition * 0.001;
 }
 
 function enterSong(_:Int) {
