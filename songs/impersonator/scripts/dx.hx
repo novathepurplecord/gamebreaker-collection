@@ -92,8 +92,8 @@ function postUpdate() {
 
 function stepHit(_:Int) {
     //cool bounce
-    if (_ >= 584 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
-    if (_ >= 584 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
+    if (_ >= 581 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
+    if (_ >= 581 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
         case 448:
@@ -110,15 +110,15 @@ var zoomTwn:FlxTween;
 
 function beatHit(_:Int) {
     switch (_) {
-        case 128:
+        case 176:
             camBG.addShader(hotlineVHS);
             camBG.flash(FlxColor.RED, 1);
-        case 176:
+        case 240:
             camGame.flash(FlxColor.RED, 1);
     }
 
     // cool bounce 2
-    if (_ >= 140 && _ % 2 == 0) {
+    if (_ >= 146 && _ % 2 == 0) {
         for (twn in [angleTwn, zoomTwn]) twn?.cancel();
         camRight = !camRight;
         camHUD.zoom += 0.04;
