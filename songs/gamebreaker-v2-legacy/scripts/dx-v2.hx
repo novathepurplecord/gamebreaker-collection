@@ -1,7 +1,6 @@
 importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
-importScript("data/scripts/v2/dxMoveNotes");
 importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
