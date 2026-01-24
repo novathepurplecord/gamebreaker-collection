@@ -1,11 +1,11 @@
 import FunkinBitmapText;
 
 var songVersions = [
-    "gamebreaker" => ["GAMEBREAKER", "IMPERSONATOR"],
-    "gamebreaker-v2" => ["LEGACY", "OLDEST", "TRACED"]
+    "gamebreaker" => ["gamebreaker", "impersonator"],
+    "gamebreaker-v2" => ["legacy", "oldest", "traced"]
 ];
 
-var curSelectedSong:Int = 0;
+var curSelectedType:Int = 0;
 
 var selectCam = new FlxCamera();
 
@@ -20,7 +20,7 @@ function create() {
     selectBox.alpha = 0.8;
     selectBox.camera = selectCam;
 
-    add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + songVersions[curSelected][curSelectedSong], sonicHudFont)).screenCenter();
+    add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + songVersions[curSelected][curSelectedType].toUpperCase(), sonicHudFont)).screenCenter();
     selectText.scale.set(0.8, 0.8);
     selectText.camera = selectCam;
 
@@ -35,15 +35,12 @@ function update() {
 
     if (controls.LEFT_P || controls.RIGHT_P) {
         CoolUtil.playMenuSFX(0);
-        curSelectedSong = (controls.LEFT_P) ? FlxMath.wrap(curSelectedSong - 1, 0, songVersions[curSelected].length - 1) : FlxMath.wrap(curSelectedSong + 1, 0, songVersions[curSelected].length - 1);
-        selectText.text = 'VERSION:' + songVersions[curSelected][curSelectedSong];
+        curSelectedType = (controls.LEFT_P) ? FlxMath.wrap(curSelectedType - 1, 0, songVersions[curSelected].length - 1) : FlxMath.wrap(curSelectedType + 1, 0, songVersions[curSelected].length - 1);
+        selectText.text = 'VERSION:' + songVersions[curSelected][curSelectedType].toUpperCase();
         selectText.screenCenter();
     }
 
-    if (controls.ACCEPT) {
-        close();
-        (curSelected == 'gamebreaker') ? enterSong(songVersions[curSelected][curSelectedSong].toLowerCase()) : enterSong(curSelected + '-' + songVersions[curSelected][curSelectedSong].toLowerCase());
-    }
+    if (controls.ACCEPT) (curSelected == 'gamebreaker') ? enterSong(songVersions[curSelected][curSelectedType]) : enterSong(curSelected + '-' + songVersions[curSelected][curSelectedType]);
 
     wiggleShader.iTime = Conductor.songPosition * 0.001;
 }

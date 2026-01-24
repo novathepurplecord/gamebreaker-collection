@@ -30,7 +30,9 @@ function create() {
     add(misesNum = new FlxBitmapText(missesText.x + 255, missesText.y, 'miss', sonicHudFont)).camera = camSonic;
 
     //healthbar
-    add(healthNum = new FlxBitmapText(lifeIcon.x + 100, 860, 'heal', sonicHudFont)).camera = camSonic;
+    add(healthNum = new FlxBitmapText(lifeIcon.x + 65, 860, 'heal', sonicHudFont)).camera = camSonic;
+    healthNum.autoSize = false;
+    healthNum.alignment = 'left';
 
     for (num in [lifeIcon, scoreNum, timeNum, misesNum, healthNum]) num.scale.set(4, 4);
 
