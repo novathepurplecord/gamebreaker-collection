@@ -48,7 +48,7 @@ function create() {
         realBreakings.add(songName);
     }
 
-    add(dxBackdrop = new FlxBackdrop(Paths.image('characters/dx')));
+    add(dxBackdrop = new FlxBackdrop(Paths.image('characters/dx2-v2-spritemap/spritemap1')));
     dxBackdrop.velocity.set(50, 50);
     dxBackdrop.alpha = 0.2;
     dxBackdrop.blend = BlendMode.ADD;

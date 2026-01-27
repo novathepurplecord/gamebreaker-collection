@@ -13,6 +13,7 @@ var hotlineVHS = new CustomShader("hotlineVHS");
 var bfX:Int = 529;
 var bfY:Int = 269;
 
+var dx = strumLines.members[0].characters[0];
 var dx2 = strumLines.members[0].characters[1];
 var dx3 = strumLines.members[0].characters[2];
 
@@ -31,7 +32,7 @@ function create() {
 
     // character cameras visibility etc
     dx2.visible = dx3.visible = false;
-    dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
+    dx.camera = dx2.camera = dx3.camera = bf.camera = camChars;
 
     // scale mode
     FlxG.scaleMode.width = 1280;
@@ -98,7 +99,7 @@ function stepHit(_:Int) {
     if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
-        case 302: dad.visible = !(dx2.visible = true);
+        case 302: dx.visible = !(dx2.visible = true);
         case 816: dx2.visible = !(dx3.visible = true);
     }
 }
