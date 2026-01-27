@@ -2,7 +2,7 @@
 <character x="125" y="245" icon="dx-v2">
 	<anim name="idle" anim="dx/idle"/>
 	<anim name="singLEFT" anim="dx/singLEFT" x="7" y="-1"/>
-	<anim name="singDOWN" anim="dx/singDOWN" x="-3" y="-6"/>
-	<anim name="singUP" anim="dx/singUP" x="2" y="2"/>
-	<anim name="singRIGHT" anim="dx/singRIGHT" x="5" y="1"/>
+	<anim name="singDOWN" anim="dx/singDOWN" x="-1" y="-3"/>
+	<anim name="singUP" anim="dx/singUP" x="1" y="2"/>
+	<anim name="singRIGHT" anim="dx/singRIGHT" x="6" y="1"/>
 </character>
