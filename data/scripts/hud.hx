@@ -3,7 +3,7 @@ import flixel.util.FlxStringUtil;
 import FunkinBitmapText;
 
 var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
-var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/FlxBitmapFontSonic1', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789'\"% " + "+-.,");
+var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/FlxBitmapFontSonic1', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-.,");
 
 function create() {
     //new cam for hud

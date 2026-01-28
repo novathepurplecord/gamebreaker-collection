@@ -12,8 +12,8 @@ function create() {
 
     //text (yellow one)
     add(scoreText = new FlxBitmapText(130, 90, 'SCORE', sonicHudFont)).camera = camSonic;
-    add(timeText = new FlxBitmapText(scoreText.x - 15, scoreText.y + 65, 'TIME', sonicHudFont)).camera = camSonic;
-    add(missesText = new FlxBitmapText(scoreText.x + 10, timeText.y + 60, 'MISSES', sonicHudFont)).camera = camSonic;
+    add(timeText = new FlxBitmapText(scoreText.x - 12, scoreText.y + 65, 'TIME', sonicHudFont)).camera = camSonic;
+    add(missesText = new FlxBitmapText(scoreText.x + 12, timeText.y + 62, 'MISSES', sonicHudFont)).camera = camSonic;
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);
@@ -21,14 +21,14 @@ function create() {
     }
 
     //sonic life icon
-    add(lifeIcon = new FlxSprite(50, 800, Paths.image("hud/sonicLifeCounter-v2"))).camera = camSonic;
+    add(lifeIcon = new FlxSprite(55, 800, Paths.image("hud/sonicLifeCounter-v2"))).camera = camSonic;
 
     //numbers (white ones)
-    add(scoreNum = new FlxBitmapText(scoreText.x + 320, scoreText.y, 'scor', sonicHudFont)).camera = camSonic;
+    add(scoreNum = new FlxBitmapText(scoreText.x + 350, scoreText.y, 'scor', sonicHudFont)).camera = camSonic;
     scoreNum.autoSize = false;
     scoreNum.alignment = 'right';
-    add(timeNum = new FlxBitmapText(timeText.x + 145, timeText.y, 'tim', sonicHudFont)).camera = camSonic;
-    add(misesNum = new FlxBitmapText(missesText.x + 255, missesText.y, 'miss', sonicHudFont)).camera = camSonic;
+    add(timeNum = new FlxBitmapText(timeText.x + 190, timeText.y, 'tim', sonicHudFont)).camera = camSonic;
+    add(misesNum = new FlxBitmapText(missesText.x + 230, missesText.y, 'miss', sonicHudFont)).camera = camSonic;
 
     //healthbar
     add(healthNum = new FlxBitmapText(lifeIcon.x + 145, 852, 'heal', sonicHealthFont)).camera = camSonic;

@@ -68,7 +68,7 @@ function update() {
             obj.setGraphicSize(520, 420);
             if (FlxG.mouse.justPressed) {
                 curSelected = gameBreakings[i];
-                superOpenSubState('selectThingy');
+                superOpenSubState('substates/selectThingy');
             }
         }
         else obj.setGraphicSize(500, 400);

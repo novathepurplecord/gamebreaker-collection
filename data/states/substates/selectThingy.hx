@@ -12,7 +12,7 @@ var selectCam = new FlxCamera();
 var wiggleShader = new CustomShader('wiggle');
 
 function create() {
-    var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/FlxBitmapFontSonic-v2', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
+    var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2-test', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
     FlxG.cameras.add(selectCam, false).bgColor = 0;
 
     add(selectBox = new FlxSprite().makeSolid(800, 100, FlxColor.BLACK)).screenCenter();
@@ -21,7 +21,7 @@ function create() {
     selectBox.camera = selectCam;
 
     add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + songVersions[curSelected][curSelectedType].toUpperCase(), sonicHudFont)).screenCenter();
-    selectText.scale.set(0.8, 0.8);
+    selectText.scale.set(3.7, 3.7);
     selectText.camera = selectCam;
 
     selectCam.addShader(wiggleShader);
