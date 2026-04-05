@@ -2,18 +2,18 @@ import flixel.effects.FlxFlicker;
 import flixel.util.FlxStringUtil;
 import FunkinBitmapText;
 
-var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
+public var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
 var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2-test', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-:,");
-var sonicHealthFont = FunkinBitmapText.fromMono('images/hud/lifeFont-traced', "0123456789%");
+var sonicHealthFont = FunkinBitmapText.fromMono('images/hud/lifeFont', "0123456789%");
 
 function create() {
     //new cam for hud
     FlxG.cameras.insert(camSonic, members.indexOf(camHUD), false).bgColor = 0;
 
     //text (yellow one)
-    add(scoreText = new FlxBitmapText(130, 90, 'GAME', sonicHudFont)).camera = camSonic;
-    add(timeText = new FlxBitmapText(scoreText.x - 12, scoreText.y + 65, 'BREAKER', sonicHudFont)).camera = camSonic;
-    add(missesText = new FlxBitmapText(scoreText.x + 12, timeText.y + 62, 'T', sonicHudFont)).camera = camSonic;
+    add(scoreText = new FlxBitmapText(130, 90, 'SCORE', sonicHudFont)).camera = camSonic;
+    add(timeText = new FlxBitmapText(scoreText.x - 12, scoreText.y + 65, 'TIME', sonicHudFont)).camera = camSonic;
+    add(missesText = new FlxBitmapText(scoreText.x + 12, timeText.y + 62, 'MISSES', sonicHudFont)).camera = camSonic;
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);
@@ -48,7 +48,7 @@ function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.
 function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
 
 function postUpdate() {
-    var curTime = FlxStringUtil.formatTime(inst.time);
+    var curTime = FlxStringUtil.formatTime(inst.time * 0.001);
     var curHealth = Math.floor(health * 50);
     timeNum.text = curTime;
     scoreNum.text = songScore;

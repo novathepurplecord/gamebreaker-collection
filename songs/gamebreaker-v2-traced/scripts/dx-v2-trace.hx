@@ -7,6 +7,7 @@ var camDX = new FlxCamera(-140, -190, 1880, 880, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
+var xtdwgShader = new CustomShader("xtdwg");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
 var bfX:Int = 529;
@@ -16,16 +17,22 @@ var dx2 = strumLines.members[0].characters[1];
 var dx3 = strumLines.members[0].characters[2];
 
 function create() {
+    FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.addShader(dxShader);
 
+    for (cam in [camHUD, camGame, camBG, camDX, camChars]) cam.addShader(xtdwgShader);
+    xtdwgShader.intensity = 1.0;
+
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
 
     dx2.visible = dx3.visible = false;
     dad.camera = dx2.camera = dx3.camera = bf.camera = camChars;
+    FlxG.scaleMode.width = 1280;
+    FlxG.scaleMode.height = 960;
 }
 
 function postCreate() {

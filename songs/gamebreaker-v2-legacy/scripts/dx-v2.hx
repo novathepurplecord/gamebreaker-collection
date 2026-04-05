@@ -2,27 +2,28 @@ importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/betterSustains");
+importScript("data/scripts/v2/dxMoveNotes");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
-var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
+var camDX = new FlxCamera(0, -360, 1480, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-public var dxFocused = true;
-
 var bfX:Int = 529;
 var bfY:Int = 269;
 
-var dx = strumLines.members[0].characters[0];
-var dx2 = strumLines.members[0].characters[1];
+var dx = strumLines.members[0].characters[1];
+var dx2 = strumLines.members[0].characters[0];
 var dx3 = strumLines.members[0].characters[2];
 
 function create() {
+    // window resizing
     FlxG.resizeWindow(1024, 768);
     camera.bgColor = 0;
 
+    // cameras setup
     FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.angle = 90;
@@ -30,14 +31,18 @@ function create() {
 
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
 
-    dx2.visible = dx3.visible = false;
+    // character cameras visibility etc
+    for (spr in [dx2, dx3]) spr.kill();
     dx.camera = dx2.camera = dx3.camera = bf.camera = camChars;
+    dx2.useRenderTexture = true;
     betterPicoSustains = true; // from betterSustains.hx
 
+    // scale mode
     FlxG.scaleMode.width = 1280;
     FlxG.scaleMode.height = 960;
 }
 
+// post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
     bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
@@ -48,11 +53,11 @@ function postCreate() {
 
     for (obj in [gf, comboGroup]) remove(obj);
 
-    for (strums in cpuStrums.members) strums.x += 380;
+    for (strums in cpuStrums.members) strums.x += 230;
 }
 
+// camera tuffs update
 function update(elapsed:Float) {
-    //scrolls camera setup
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
 
@@ -72,13 +77,13 @@ var hill = stage.getSprite("hill");
 var trees = stage.getSprite("trees");
 
 function postUpdate() {
-    //shader itim
+    // shader itim
     hotlineVHS.iTime = Conductor.songPosition * 0.001;
 
-    //cam follo
+    // cam follo
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
-    //scale things
+    // scale things
     bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
@@ -98,8 +103,12 @@ function stepHit(_:Int) {
     if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
-        case 302: dx.visible = !(dx2.visible = true);
-        case 816: dx2.visible = !(dx3.visible = true);
+        case 302:
+            dx.kill();
+            dx2.revive();
+        case 816:
+            dx2.kill();
+            dx3.revive();
     }
 }
 
@@ -115,6 +124,7 @@ function beatHit(_:Int) {
         FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 
+    // events stuff
     switch (_) {
         case 156:
             camBG.addShader(hotlineVHS);
@@ -122,12 +132,14 @@ function beatHit(_:Int) {
         case 204:
             camGame.flash(FlxColor.RED, 1);
             dxZoom = 0.6; // from camFollow-v2
-            dxPos = [420, 0]; // from camFollow-v2
+            dxPos.y = 0; // from camFollow-v2
             targetDxBfScale = 1;
-            for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
     }
 }
 
+public var dxFocused = true;
+
+// event camera movement
 function onEvent(event) {
     var e = event.event;
     if (e.name != "Camera Movement") return;
@@ -143,17 +155,16 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
     e.cancel();
 
     var note = e.note;
+    var graphic = Paths.image('notes/dxNote');
 
     //randomness
     var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.WHITE];
     note.color = colors[FlxG.random.int(0, colors.length - 1)];
 
-    var graphic = Paths.image('notes/dxNote');
-
     if (note.isSustainNote) {
-        note.loadGraphic(graphic, true, 24, 24);
+        note.loadGraphic(graphic, true, 24, 25);
         note.animation.add("hold", [e.strumID]);
-        note.animation.add("holdend", [e.strumID]);
+        note.animation.add("holdend", [e.strumID + 3]);
         note.alpha = 0.1;
     } else {
         var size = FlxG.random.int(56, 72);
@@ -161,22 +172,26 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
         note.animation.add("scroll", [e.strumID]);
         note.scale.set(1.5, 1.5);
     }
-}
 
+    note.updateHitbox();
+}
 
 function onStrumCreation(e) if (e.player == 0) {
     e.cancel();
 
     var strum = e.strum;
+    strum.updateHitbox();
     strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
     strum.animation.add("static", [e.strumID]);
-    strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
-    strum.animation.add("confirm", [12 + e.strumID, 16 + e.strumID], 24, false);
+    strum.animation.add("pressed", [e.strumID + 8], 12, false);
+    strum.animation.add("confirm", [e.strumID + 12, e.strumID + 16], 12, false);
     strum.scale.set(1.5, 1.5);
 }
 
 function onCountdown(e) e.cancel();
 
 function onNoteHit(e) e.enableCamZooming = false;
+
+function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
 
 function destroy() FlxG.resizeWindow(1280, 720);

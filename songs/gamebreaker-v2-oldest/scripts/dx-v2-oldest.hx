@@ -4,7 +4,7 @@ importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
-var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
+var camDX = new FlxCamera(0, -360, 1480, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
@@ -49,7 +49,8 @@ function postCreate() {
     strumLines.members[0].camera = camDX;
 
     for (obj in [gf, comboGroup]) remove(obj);
-    for (strums in cpuStrums.members) strums.x += 380;
+
+    for (strums in cpuStrums.members) strums.x += 230;
 }
 
 // camera stuff update
@@ -107,19 +108,6 @@ function stepHit(_:Int) {
 var camRight:Bool = true;
 
 function beatHit(_:Int) {
-    // events stuff
-    switch (_) {
-        case 156:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
-        case 204:
-            camGame.flash(FlxColor.RED, 1);
-            dxZoom = 0.6;
-            dxPos = [420, 0];
-            targetDxBfScale = 1;
-            for (strums in cpuStrums.members) strums.scrollFactor.set(1, 1);
-    }
-
     // cool bounce 2
     if (_ >= 140 && _ % 2 == 0) {
         camRight = !camRight;
@@ -127,6 +115,18 @@ function beatHit(_:Int) {
         camHUD.angle = (camRight) ? 0.75 : -0.75;
         FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
+    }
+
+    // events stuff
+    switch (_) {
+        case 156:
+            camBG.addShader(hotlineVHS);
+            camBG.flash(FlxColor.RED, 1);
+        case 204:
+            camGame.flash(FlxColor.RED, 1);
+            dxZoom = 0.6; // from camFollow-v2
+            dxPos.y = 0; // from camFollow-v2
+            targetDxBfScale = 1;
     }
 }
 
@@ -160,6 +160,8 @@ function onNoteCreation(e) if (e.strumLineID == 0) {
         note.animation.add("scroll", [20.2 + e.strumID]);
         note.scale.set(0.5, 0.5);
     }
+
+    note.updateHitbox();
 }
 
 // character strum graphics
@@ -177,5 +179,7 @@ function onStrumCreation(e) if (e.player == 0) {
 function onCountdown(e) e.cancel();
 
 function onNoteHit(e) e.enableCamZooming = false;
+
+function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1);
 
 function destroy() FlxG.resizeWindow(1280, 720);

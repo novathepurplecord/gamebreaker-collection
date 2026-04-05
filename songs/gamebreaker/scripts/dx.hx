@@ -11,8 +11,6 @@ var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 var glitch = new CustomShader("glitch");
 
-public var dxFocused = true;
-
 var bfX:Int = 529;
 var bfY:Int = 269;
 
@@ -121,6 +119,8 @@ function beatHit(_:Int) {
             camGame.flash(FlxColor.RED, 1);
     }
 }
+
+public var dxFocused = true;
 
 function onEvent(event) {
     var e = event.event;

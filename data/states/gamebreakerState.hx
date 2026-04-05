@@ -1,4 +1,3 @@
-import FunkinBitmapText;
 import funkin.menus.ModSwitchMenu;
 import funkin.editors.EditorPicker;
 import funkin.menus.credits.CreditsMain;
@@ -92,7 +91,7 @@ function update() {
 function beatHit(_:Int) {
     targetVelDxBack -= 300;
     (_ % 2 == 0) ? FlxG.camera.zoom += 0.02 : FlxG.camera.zoom -= 0.02;
-    if (_ == 32) FlxTween.tween(dxBackBackdrop, {angle: 90}, 1, {ease: FlxEase.sineOut, type: FlxTween.PINGPONG, delay: 1});
+    if (_ >= 32 && _ % 1 == 0) FlxTween.tween(dxBackBackdrop, {angle: dxBackBackdrop.angle + 90}, (Conductor.stepCrochet * 0.001) * 8, {ease: FlxEase.sineOut});
 }
 
 

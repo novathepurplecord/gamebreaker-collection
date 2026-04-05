@@ -1,8 +1,8 @@
 <!DOCTYPE codename-engine-character>
 <character x="-50" y="-100" sprite="traced/dx-v2-traced" scale="0.7" antialiasing="false" icon="dx-v2">
 	<anim name="idle" anim="idle"/>
-	<anim name="singLEFT" anim="left" x="15" y="-2"/>
-	<anim name="singDOWN" anim="down" x="-75" y="-15"/>
-	<anim name="singUP" anim="up" x="7" y="24"/>
-	<anim name="singRIGHT" anim="right" x="-39" y="9"/>
+	<anim name="singLEFT" anim="left" x="-12.14" y="53.71"/>
+	<anim name="singDOWN" anim="down" x="-29.29" y="77.86"/>
+	<anim name="singUP" anim="up" x="-17.29" y="66.86"/>
+	<anim name="singRIGHT" anim="right" x="-0.43" y="71.86"/>
 </character>

@@ -8,7 +8,7 @@ function postUpdate() {
     camFollow.setPosition(dxFocused ? 420 : 520, dxFocused ? 444 : 480);
     defaultCamZoom = dxFocused ? 1.3 : 0.97;
     
-    switch(character.animation.curAnim.name) {
+    switch (character.animation.curAnim.name) {
         case "singLEFT": camFollow.x -= offset;
         case "singRIGHT": camFollow.x += offset;
         case "singUP": camFollow.y -= offset;
