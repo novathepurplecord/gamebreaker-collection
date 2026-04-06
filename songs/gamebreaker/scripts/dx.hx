@@ -1,6 +1,6 @@
 importScript("data/scripts/yoshi");
-importScript("data/scripts/hud");
-importScript("data/scripts/camFollow");
+importScript("data/scripts/v1/hud");
+importScript("data/scripts/v1/camFollow");
 importScript("data/scripts/betterSustains");
 
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -11,35 +11,28 @@ var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 var glitch = new CustomShader("glitch");
 
-var bfX:Int = 529;
-var bfY:Int = 269;
-
 var dx2 = strumLines.members[0].characters[1];
 
 function create() {
-    FlxG.resizeWindow(1024, 768);
-    camera.bgColor = 0;
-
-    FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
-    FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
+    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    FlxG.cameras.insert(camBG, 0, false);
+    FlxG.cameras.insert(camDX, 1, false);
     camDX.angle = 90;
     camDX.addShader(dxShader);
 
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
-
-    dx2.visible = false;
     dad.camera = dx2.camera = bf.camera = camChars;
-
-    FlxG.scaleMode.width = 1280;
-    FlxG.scaleMode.height = 960;
+    dx2.visible = false;
 }
+
+var bfX:Int = 529;
+var bfY:Int = 269;
 
 function postCreate() {
     bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
 
     camera.zoom = defaultCamZoom;
-    strumLines.members[0].camera = camDX;
+    cpuStrums.camera = camDX;
 
     for (obj in [gf, comboGroup]) remove(obj);
 
@@ -59,11 +52,6 @@ function update() {
 }
 
 var targetBfScale:Int = 2;
-var targetHillScale:Float = 0.525;
-var targetTreeScale:Float = 0.64;
-
-var hill = stage.getSprite("hill");
-var trees = stage.getSprite("trees");
 
 function postUpdate() {
     //shader itim
@@ -77,14 +65,6 @@ function postUpdate() {
     bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
-
-    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
-    hill.scale.set(hillScale, hillScale);
-    hill.y = hillScale;
-
-    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
-    trees.scale.set(treeScale, treeScale);
-    trees.y = 134 * treeScale; 
 }
 
 function stepHit(_:Int) {
@@ -120,17 +100,12 @@ function beatHit(_:Int) {
     }
 }
 
-public var dxFocused = true;
-
-function onEvent(event) {
-    var e = event.event;
+// event camera movement
+function onEvent(e) {
+    var e = e.event;
     if (e.name != "Camera Movement") return;
-
-    var isDX = e.params[0] == 0;
-    dxFocused = isDX;
-    targetBfScale = isDX ? 2 : 1;
-    targetHillScale = isDX ? 0.525 : 0.56;
-    targetTreeScale = isDX ? 0.64 : 0.66;
+    
+    targetBfScale = dxFocused ? 1 : 2;
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "notes/sanicNote";
@@ -140,5 +115,3 @@ function onPostStrumCreation(e) if (e.player == 0) e.strum.scrollFactor.set(1, 1
 function onCountdown(e) e.cancel();
 
 function onNoteHit(e) e.enableCamZooming = false;
-
-function destroy() FlxG.resizeWindow(1280, 720);

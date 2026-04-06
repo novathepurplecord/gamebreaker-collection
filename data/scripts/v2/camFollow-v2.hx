@@ -7,6 +7,14 @@ public var dxPos = {x: 420, y: 444};
 public var picoZoom:Float = 0.7;
 public var picoPos = {x: 520, y: 480};
 
+public var dxFocused = true;
+
+function onEvent(e) {
+    var e = e.event;
+    if (e.name != "Camera Movement") return;
+    dxFocused = e.params[0] == 0;
+}
+
 function postUpdate() {
     var offset = dxFocused ? offsetDX : offsetPico;
     var character = dxFocused ? dad : boyfriend;

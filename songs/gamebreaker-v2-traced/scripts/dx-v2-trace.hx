@@ -136,18 +136,12 @@ function beatHit(_:Int) {
     }
 }
 
-public var dxFocused = true;
-
 // event camera movement
 function onEvent(event) {
     var e = event.event;
     if (e.name != "Camera Movement") return;
-
-    var isDX = e.params[0] == 0;
-    dxFocused = isDX;
-    targetBfScale = isDX ? targetDxBfScale : 1;
-    targetHillScale = isDX ? 0.525 : 0.56;
-    targetTreeScale = isDX ? 0.64 : 0.66;
+    
+    targetBfScale = dxFocused ? targetDxBfScale : 1;
 }
 
 function onNoteCreation(e) {

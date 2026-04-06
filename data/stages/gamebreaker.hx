@@ -18,4 +18,25 @@ function beatHit(_:Int) {
     }
 }
 
+var targetHillScale:Float = 0.525;
+var targetTreeScale:Float = 0.64;
+
+function postUpdate() {
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
+    hill.scale.set(hillScale, hillScale);
+    hill.y = hillScale;
+
+    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
+    trees.scale.set(treeScale, treeScale);
+    trees.y = 134 * treeScale; 
+}
+
+function onEvent(e) {
+    var e = e.event;
+    if (e.name != "Camera Movement") return;
+
+    targetHillScale = dxFocused ? 0.525 : 0.56;
+    targetTreeScale = dxFocused ? 0.64 : 0.66;
+}
+
 function postCreate() bg.camera = trees.camera = hill.camera = camBG;
