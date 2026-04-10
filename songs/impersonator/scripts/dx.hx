@@ -1,8 +1,8 @@
 importScript("data/scripts/yoshi");
 importScript("data/scripts/v1/hud");
 importScript("data/scripts/v1/camFollow");
+importScript("data/scripts/betterSustains");
 
-public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(140, -390, 1280, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
@@ -14,9 +14,7 @@ var dx2 = strumLines.members[0].characters[1];
 
 function create() {
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
-    FlxG.cameras.insert(camBG, 0, false);
-    FlxG.cameras.insert(camDX, 1, false);
-    camDX.angle = 90;
+    FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
     dad.camera = dx2.camera = bf.camera = camChars;
@@ -27,7 +25,6 @@ var bfX:Int = 529;
 var bfY:Int = 269;
 
 function postCreate() {
-    bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
 
     camera.zoom = defaultCamZoom;
@@ -40,17 +37,12 @@ function postCreate() {
 
 function update() {
     //scrolls camera setup
-    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
-    camBG.zoom = camera.zoom;
-
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
 
     camChars.scroll.set(camera.scroll.x, camera.scroll.y);
     camChars.zoom = camera.zoom;
 }
-
-var targetBfScale:Int = 2;
 
 function postUpdate() {
     //shader itim
@@ -61,7 +53,7 @@ function postUpdate() {
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
     //scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? 2 : 1, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 }
@@ -79,7 +71,6 @@ function stepHit(_:Int) {
 }
 
 var camRight:Bool = true;
-
 var angleTwn:FlxTween;
 var zoomTwn:FlxTween;
 
@@ -101,13 +92,6 @@ function beatHit(_:Int) {
         case 240:
             camGame.flash(FlxColor.RED, 1);
     }
-}
-
-// event camera movement
-function onEvent(e) {
-    var e = e.event;
-    if (e.name != "Camera Movement") return;
-    targetBfScale = dxFocused ? 1 : 2;
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) e.noteSprite = "notes/sanicNote";

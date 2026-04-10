@@ -4,7 +4,6 @@ importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/betterSustains");
 importScript("data/scripts/v2/dxMoveNotes");
 
-public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
@@ -18,9 +17,7 @@ var dx3 = strumLines.members[0].characters[2];
 function create() {
     // cameras setup
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
-    FlxG.cameras.insert(camBG, 0, false);
-    FlxG.cameras.insert(camDX, 1, false);
-    camDX.angle = 90;
+    FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
     // character cameras visibility etc
@@ -34,23 +31,18 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
-    bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
-    bf.scrollFactor.y = 1.3;
 
     camera.zoom = defaultCamZoom;
     cpuStrums.camera = camDX;
 
-    for (obj in [gf, comboGroup]) remove(obj);
+    for (i in [gf, comboGroup]) remove(i);
 
     for (strums in cpuStrums.members) strums.x += 240;
 }
 
 // camera tuffs update
 function update(elapsed:Float) {
-    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
-    camBG.zoom = camera.zoom;
-
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
 
@@ -58,7 +50,6 @@ function update(elapsed:Float) {
     camChars.zoom = camera.zoom;
 }
 
-var targetBfScale:Int = 2;
 var targetDxBfScale:Int = 2;
 
 function postUpdate() {
@@ -69,7 +60,7 @@ function postUpdate() {
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
     // scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 }
@@ -109,13 +100,6 @@ function beatHit(_:Int) {
             targetDxBfScale = 1;
             bf.scrollFactor.y = 1.3;
     }
-}
-
-// event camera movement
-function onEvent(event) {
-    var e = event.event;
-    if (e.name != "Camera Movement") return;
-    targetBfScale = dxFocused ? 1 : targetDxBfScale;
 }
 
 function onNoteCreation(e) {

@@ -7,5 +7,5 @@
 	<sprite sprite="pillar2" name="pillar2" x="700" y="-1257" scroll="0.9"/>
 	<sprite sprite="floor" name="floor" x="-552" y="304" scale="0.8"/>
 	<dad x="0" y="0"/>
-	<boyfriend x="0" y="0"/>
+	<boyfriend x="529" y="269"/>
 </stage>

@@ -1,3 +1,22 @@
+public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
+
+function create() FlxG.cameras.insert(camBG, 0, false);
+
+function postCreate() bg.camera = trees.camera = hill.camera = camBG;
+
+function postUpdate() {
+    hillScale = CoolUtil.fpsLerp(hill.scale.y, curCameraTarget == 0 ? 0.525 : 0.56, 0.05);
+    hill.scale.set(hillScale, hillScale);
+    hill.y = hillScale;
+
+    treeScale = CoolUtil.fpsLerp(trees.scale.x, curCameraTarget == 0 ? 0.64 : 0.66, 0.05);
+    trees.scale.set(treeScale, treeScale);
+    trees.y = treeScale * 143;
+
+    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
+    camBG.zoom = camera.zoom;
+}
+
 function beatHit(_:Int) {
     switch (PlayState.SONG.meta.name) {
         case 'gamebreaker', 'gamebreaker-v2-legacy', 'gamebreaker-v2-oldest':
@@ -17,26 +36,3 @@ function beatHit(_:Int) {
             } 
     }
 }
-
-var targetHillScale:Float = 0.525;
-var targetTreeScale:Float = 0.64;
-
-function postUpdate() {
-    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
-    hill.scale.set(hillScale, hillScale);
-    hill.y = hillScale;
-
-    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
-    trees.scale.set(treeScale, treeScale);
-    trees.y = 134 * treeScale; 
-}
-
-function onEvent(e) {
-    var e = e.event;
-    if (e.name != "Camera Movement") return;
-
-    targetHillScale = dxFocused ? 0.525 : 0.56;
-    targetTreeScale = dxFocused ? 0.64 : 0.66;
-}
-
-function postCreate() bg.camera = trees.camera = hill.camera = camBG;

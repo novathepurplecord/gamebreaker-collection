@@ -2,7 +2,6 @@ importScript("data/scripts/traced/yoshi-trace");
 importScript("data/scripts/traced/hud-v2-trace");
 importScript("data/scripts/v2/camFollow-v2");
 
-public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var camDX = new FlxCamera(-140, -190, 1880, 880, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
@@ -18,9 +17,6 @@ var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     FlxG.resizeWindow(1024, 768);
-    camera.bgColor = 0;
-
-    FlxG.cameras.insert(camBG, 0, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
     camDX.addShader(dxShader);
 
@@ -48,10 +44,6 @@ function postCreate() {
 }
 
 function update(elapsed:Float) {
-    //scrolls camera setup
-    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
-    camBG.zoom = camera.zoom;
-
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom + 1;
 

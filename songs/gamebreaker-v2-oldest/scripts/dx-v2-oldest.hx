@@ -3,8 +3,7 @@ importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/betterSustains");
 
-public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
-var camDX = new FlxCamera(0, -360, 1480, 1380, 1);
+var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
@@ -17,9 +16,7 @@ var dx3 = strumLines.members[0].characters[2];
 function create() {
     // cameras setup
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
-    FlxG.cameras.insert(camBG, 0, false);
-    FlxG.cameras.insert(camDX, 1, false);
-    camDX.angle = 90;
+    FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
     // character cameras visibility etc
@@ -32,22 +29,18 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
-    bf.setPosition(bfX, bfY);
     bf.scale.set(2, 2);
 
     camera.zoom = defaultCamZoom;
     cpuStrums.camera = camDX;
 
-    for (obj in [gf, comboGroup]) remove(obj);
+    for (i in [gf, comboGroup]) remove(i);
 
     for (strums in cpuStrums.members) strums.x += 230;
 }
 
 // camera stuff update
 function update(elapsed:Float) {
-    camBG.scroll.set(camera.scroll.x, camera.scroll.y);
-    camBG.zoom = camera.zoom;
-
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
 
@@ -55,13 +48,7 @@ function update(elapsed:Float) {
     camChars.zoom = camera.zoom;
 }
 
-var targetBfScale:Int = 2;
 var targetDxBfScale:Int = 2;
-var targetHillScale:Float = 0.525;
-var targetTreeScale:Float = 0.64;
-
-var hill = stage.getSprite("hill");
-var trees = stage.getSprite("trees");
 
 function postUpdate() {
     // shader itim
@@ -71,17 +58,9 @@ function postUpdate() {
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
 
     // scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, targetBfScale, 0.05);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1, 0.05);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
-
-    hillScale = CoolUtil.fpsLerp(hill.scale.y, targetHillScale, 0.05);
-    hill.scale.set(hillScale, hillScale);
-    hill.y = hillScale;
-
-    treeScale = CoolUtil.fpsLerp(trees.scale.x, targetTreeScale, 0.05);
-    trees.scale.set(treeScale, treeScale);
-    trees.y = 134 * treeScale; 
 }
 
 function stepHit(_:Int) {
@@ -96,15 +75,18 @@ function stepHit(_:Int) {
 }
 
 var camRight:Bool = true;
+var angleTwn:FlxTween;
+var zoomTwn:FlxTween;
 
 function beatHit(_:Int) {
     // cool bounce 2
     if (_ >= 140 && _ % 2 == 0) {
+        for (twn in [angleTwn, zoomTwn]) twn?.cancel();
         camRight = !camRight;
         camHUD.zoom += 0.04;
         camHUD.angle = (camRight) ? 0.75 : -0.75;
-        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
-        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
+        angleTwn = FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        zoomTwn = FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 
     // events stuff

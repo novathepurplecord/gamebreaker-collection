@@ -25,16 +25,16 @@ function create() {
     dxBackdropCam.addShader(fishEye);
     fishEye.max_power = 0.2;
 
-    add(dxBackBackdrop = new FlxBackdrop(Paths.image('characters/2dx'), null, 0, 0));
+    add(dxBackBackdrop = new FlxBackdrop(Paths.image('characters/v1/2dx'), null, 0, 0));
     dxBackBackdrop.alpha = 0.7;
     dxBackBackdrop.camera = dxBackdropCam;
     dxBackBackdrop.scale.set(0.5, 0.5);
 
-    add(selectTxt = new Alphabet(0, 40, 'SELECT YOUR GAMEBREAKER')).screenCenter(FlxAxes.X);
+    add(selectTxt = new Alphabet(0, 70, 'SELECT YOUR GAMEBREAKER')).screenCenter(FlxAxes.X);
     selectTxt.effects = [new WaveEffect()];
     selectTxt.scale.set(0.9, 0.9);
 
-    add(optionsTxt = new Alphabet(0, 620, 'OPTIONS')).screenCenter(FlxAxes.X);
+    add(optionsTxt = new Alphabet(0, FlxG.height - 140, 'OPTIONS')).screenCenter(FlxAxes.X);
     optionsTxt.scale.set(0.9, 0.9);
 
     add(realBreakings = new FlxSpriteGroup());
@@ -47,7 +47,7 @@ function create() {
         realBreakings.add(songName);
     }
 
-    add(dxBackdrop = new FlxBackdrop(Paths.image('characters/dx')));
+    add(dxBackdrop = new FlxBackdrop(Paths.image('notes/dx')));
     dxBackdrop.velocity.set(50, 50);
     dxBackdrop.alpha = 0.2;
     dxBackdrop.blend = BlendMode.ADD;
