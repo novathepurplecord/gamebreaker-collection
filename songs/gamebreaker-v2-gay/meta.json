@@ -1,15 +1,14 @@
 {
-	"color": "#FFFFFF",
-	"customValues": {},
 	"opponentModeAllowed": false,
+	"icon": "face",
 	"difficulties": [
 		"normal"
 	],
-	"icon": "face",
+	"color": "#D300FF",
 	"coopAllowed": false,
 	"stepsPerBeat": 4,
-	"displayName": "gamebreaker",
+	"displayName": "gaybreakin",
 	"needsVoices": true,
-	"beatsPerMeasure": 2,
+	"beatsPerMeasure": 4,
 	"bpm": 145
 }

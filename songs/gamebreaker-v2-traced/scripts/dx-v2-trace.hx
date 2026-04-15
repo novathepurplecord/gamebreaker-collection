@@ -1,4 +1,4 @@
-importScript("data/scripts/traced/yoshi-trace");
+importScript("data/scripts/yoshi");
 importScript("data/scripts/traced/hud-v2-trace");
 importScript("data/scripts/v2/camFollow-v2");
 
@@ -183,5 +183,3 @@ function onStrumCreation(event) {
 }
 
 function onCountdown(e) e.cancel();
-
-function destroy() FlxG.resizeWindow(1280, 720);

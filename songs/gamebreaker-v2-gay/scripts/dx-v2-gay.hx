@@ -1,27 +1,35 @@
 importScript("data/scripts/yoshi");
-importScript("data/scripts/v2/hud-v2");
+importScript("data/scripts/gay/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
-importScript("data/scripts/betterSustains");
+importScript("data/scripts/gay/dxMoveNotes");
 
 var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
+var gayShader = new CustomShader("gay");
+var glitch = new CustomShader("glitch");
 
 var dx = strumLines.members[0].characters[0];
-var dx2 = strumLines.members[0].characters[1];
-var dx3 = strumLines.members[0].characters[2];
+var dxsad = strumLines.members[0].characters[1];
+var dx2 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
     FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    camChars.addShader(gayShader);
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
+    camDX.addShader(gayShader);
+
+    camBG.addShader(gayShader);
+    camGame.addShader(gayShader);
 
     // character cameras visibility etc
-    dx.camera = dx2.camera = dx3.camera = bf.camera = camChars;
-    dx2.visible = dx3.visible = false;
+    dx.camera = dxsad.camera = dx2.camera = bf.camera = camChars;
+    dxsad.visible = dx2.visible = false;
+    betterPicoSustains = true; // from betterSustains.hx
 }
 
 var bfX:Int = 529;
@@ -36,10 +44,10 @@ function postCreate() {
 
     for (i in [gf, comboGroup]) remove(i);
 
-    for (strums in cpuStrums.members) strums.x += 230;
+    for (strums in cpuStrums.members) strums.x += 240;
 }
 
-// camera stuff update
+// camera tuffs update
 function update(elapsed:Float) {
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
@@ -52,29 +60,32 @@ var targetDxBfScale:Int = 2;
 
 function postUpdate() {
     // shader itim
-    hotlineVHS.iTime = Conductor.songPosition * 0.001;
+    hotlineVHS.iTime = Conductor.songPosition;
+    glitch.iTime = Conductor.songPosition * 0.0001;
 
     // cam follo
-    camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.05);
+    camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.1);
 
     // scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1, 0.05);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1, 0.1);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 }
 
 function stepHit(_:Int) {
-    // cool bounce
+    //cool bounce
     if (_ >= 558 && _ % 4 == 0) FlxTween.tween(camHUD, {y: 5}, 0.2, {ease: FlxEase.circOut});
     if (_ >= 558 && _ % 4 == 2) FlxTween.tween(camHUD, {y: 15}, 0.2, {ease: FlxEase.sineIn});
 
     switch (_) {
-        case 302: dx.visible = !(dx2.visible = true);
-        case 816: dx2.visible = !(dx3.visible = true);
+        case 127:
+            dx.visible = !(dxsad.visible = true);
+        case 278: 
+            dxsad.visible = !(dx2.visible = true);
+            dx2.shader = glitch;
     }
 }
 
-var camRight:Bool = true;
 var angleTwn:FlxTween;
 var zoomTwn:FlxTween;
 
@@ -83,17 +94,20 @@ function beatHit(_:Int) {
     if (_ >= 140 && _ % 2 == 0) {
         for (twn in [angleTwn, zoomTwn]) twn?.cancel();
         camHUD.zoom += 0.04;
-        camHUD.angle = (_ % 4 == 2) ? -0.75 : 0.75;
+        camHUD.angle = (_ % 4 == 2) ? -20.75 : 20.75;
         angleTwn = FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         zoomTwn = FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 
+    if (_ >= 131 && _ % 2 == 0) dxsad.visible = !(dx2.visible = false);
+    else if (_ >= 131) dxsad.visible = !(dx2.visible = true);
+
     // events stuff
     switch (_) {
-        case 156:
+        case 131:
             camBG.addShader(hotlineVHS);
             camBG.flash(FlxColor.RED, 1);
-        case 204:
+        case 162:
             camGame.flash(FlxColor.RED, 1);
             dxZoom = 0.6; // from camFollow-v2
             dxPos.y = 0; // from camFollow-v2
@@ -102,42 +116,42 @@ function beatHit(_:Int) {
     }
 }
 
-// event camera movement
-function onEvent(event) {
-    var e = event.event;
-    if (e.name != "Camera Movement") return;
-    targetBfScale = dxFocused ? 1 : targetDxBfScale;
-}
-
-function onNoteCreation(e) if (e.strumLineID == 0) {
+function onNoteCreation(e) {
+	if (e.note.strumLine == playerStrums) return;
     e.cancel();
 
-    var note = e.note;
-    var graphic = Paths.image('notes/dx');
+	var note = e.note;
+	var strumID = e.strumID;
 
-    if (note.isSustainNote) {
-        note.loadGraphic(graphic, true, 24, 24);
-        note.animation.add("hold", [4 + e.strumID]);
-        note.animation.add("holdend", [e.strumID]);
-    } else {
-        note.loadGraphic(graphic, true, 210, 210);
-        note.animation.add("scroll", [20.2 + e.strumID]);
-        note.scale.set(0.5, 0.5);
-    }
+    var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.WHITE];
+    note.color = FlxG.random.int(0, Math.POSITIVE_INFINITY);
 
-    note.updateHitbox();
+	if (e.note.isSustainNote) {
+		note.loadGraphic(Paths.image('notes/dxNote'), true, 7, 6);
+		var maxCol = Math.floor(note.graphic.width / 7);
+		note.animation.add("hold", [strumID % maxCol]);
+		note.animation.add("holdend", [maxCol + strumID % maxCol]);
+	} else {
+        var size = FlxG.random.int(27, 38);
+		note.loadGraphic(Paths.image('notes/dxNote'), true, size, size);
+		var maxCol = Math.floor(note.graphic.width / 23);
+		note.animation.add("scroll", [maxCol + strumID % maxCol]);
+	}
+	note.scale.set(3, 3);
+	note.updateHitbox();
+	note.antialiasing = false;
 }
 
-// character strum graphics
 function onStrumCreation(e) if (e.player == 0) {
     e.cancel();
 
     var strum = e.strum;
-    strum.loadGraphic(Paths.image('notes/dx'), true, 210, 210);
+    strum.updateHitbox();
+    strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
     strum.animation.add("static", [e.strumID]);
-    strum.animation.add("pressed", [4 + e.strumID, 8 + e.strumID], 12, false);
-    strum.animation.add("confirm", [12 + e.strumID, 16 + e.strumID], 24, false);
-    strum.scale.set(0.5, 0.5);
+    strum.animation.add("pressed", [e.strumID + 8], 12, false);
+    strum.animation.add("confirm", [e.strumID + 12, e.strumID + 16], 12, false);
+    strum.scale.set(1.5, 1.5);
 }
 
 function onCountdown(e) e.cancel();

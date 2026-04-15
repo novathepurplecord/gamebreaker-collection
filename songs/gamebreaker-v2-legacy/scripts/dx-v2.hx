@@ -76,16 +76,17 @@ function stepHit(_:Int) {
     }
 }
 
-var camRight:Bool = true;
+var angleTwn:FlxTween;
+var zoomTwn:FlxTween;
 
 function beatHit(_:Int) {
     // cool bounce 2
     if (_ >= 140 && _ % 2 == 0) {
-        camRight = !camRight;
+        for (twn in [angleTwn, zoomTwn]) twn?.cancel();
         camHUD.zoom += 0.04;
-        camHUD.angle = (camRight) ? 0.75 : -0.75;
-        FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
-        FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
+        camHUD.angle = (_ % 4 == 2) ? -0.75 : 0.75;
+        angleTwn = FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        zoomTwn = FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 
     // events stuff

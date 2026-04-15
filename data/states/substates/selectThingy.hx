@@ -2,7 +2,7 @@ import FunkinBitmapText;
 
 var songVersions = [
     "gamebreaker" => ["gamebreaker", "impersonator"],
-    "gamebreaker-v2" => ["legacy", "oldest", "traced"]
+    "gamebreaker-v2" => ["legacy", "oldest", "traced", "gay"]
 ];
 
 var curSelectedType:Int = 0;
@@ -12,7 +12,7 @@ var selectCam = new FlxCamera();
 var wiggleShader = new CustomShader('wiggle');
 
 function create() {
-    var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2-test', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
+    var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
     FlxG.cameras.add(selectCam, false).bgColor = 0;
 
     add(selectBox = new FlxSprite().makeSolid(800, 100, FlxColor.BLACK)).screenCenter();
@@ -21,6 +21,8 @@ function create() {
     selectBox.camera = selectCam;
 
     add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + songVersions[curSelected][curSelectedType].toUpperCase(), sonicHudFont)).screenCenter();
+    selectText.autoSize = false;
+    selectText.alignment = 'left';
     selectText.scale.set(3.7, 3.7);
     selectText.camera = selectCam;
 
@@ -37,7 +39,6 @@ function update() {
         CoolUtil.playMenuSFX(0);
         curSelectedType = (controls.LEFT_P) ? FlxMath.wrap(curSelectedType - 1, 0, songVersions[curSelected].length - 1) : FlxMath.wrap(curSelectedType + 1, 0, songVersions[curSelected].length - 1);
         selectText.text = 'VERSION:' + songVersions[curSelected][curSelectedType].toUpperCase();
-        selectText.screenCenter();
     }
 
     if (controls.ACCEPT) (curSelected == 'gamebreaker') ? enterSong(songVersions[curSelected][curSelectedType]) : enterSong(curSelected + '-' + songVersions[curSelected][curSelectedType]);

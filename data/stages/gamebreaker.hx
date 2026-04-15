@@ -4,6 +4,8 @@ function create() FlxG.cameras.insert(camBG, 0, false);
 
 function postCreate() bg.camera = trees.camera = hill.camera = camBG;
 
+function onStageXMLParsed(e) if (PlayState.SONG.meta.name == 'gamebreaker-v2-gay') e.stage.spritesParentFolder = 'stages/gaybreakin/';
+
 function postUpdate() {
     hillScale = CoolUtil.fpsLerp(hill.scale.y, curCameraTarget == 0 ? 0.525 : 0.56, 0.05);
     hill.scale.set(hillScale, hillScale);
