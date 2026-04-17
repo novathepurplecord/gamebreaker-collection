@@ -60,15 +60,9 @@ function create() {
     }
 }
 
-function postCreate() {
-    //hidin everything
-    healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
-    // scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
-}
+function postCreate() healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
 
-function update() if (curBeat >= 131) {
-    camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
-}
+function update() if (curBeat >= 131) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
 
 function beatHit(_) if (_ >= 131) {
     camSonic.zoom += 0.03;

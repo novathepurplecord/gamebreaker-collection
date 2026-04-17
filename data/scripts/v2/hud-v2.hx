@@ -11,7 +11,7 @@ function create() {
     FlxG.cameras.insert(camSonic, members.indexOf(camHUD), false).bgColor = 0;
 
     //text (yellow one)
-    add(scoreText = new FlxBitmapText(67, 67, 'SCORE', sonicHudFont)).camera = camSonic;
+    add(scoreText = new FlxBitmapText(68, 67, 'SCORE', sonicHudFont)).camera = camSonic;
     add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 64.5, 'TIME', sonicHudFont)).camera = camSonic;
     add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 64.5, 'MISSES', sonicHudFont)).camera = camSonic;
 
@@ -24,11 +24,11 @@ function create() {
     }
 
     //numbers (white ones)
-    add(scoreNum = new FlxBitmapText(scoreText.x + 410, scoreText.y, null, sonicHudFont)).camera = camSonic;
-    add(timeNum = new FlxBitmapText(timeText.x + 308, timeText.y, null, sonicHudFont)).camera = camSonic;
-    add(misesNum = new FlxBitmapText(missesText.x + 313, missesText.y, null, sonicHudFont)).camera = camSonic;
+    add(scoreNum = new FlxBitmapText(scoreText.x + 409, scoreText.y, null, sonicHudFont)).camera = camSonic;
+    add(timeNum = new FlxBitmapText(timeText.x + 311, timeText.y, null, sonicHudFont)).camera = camSonic;
+    add(missesNum = new FlxBitmapText(missesText.x + 312, missesText.y, null, sonicHudFont)).camera = camSonic;
 
-    for (num in [scoreNum, timeNum, misesNum]) {
+    for (num in [scoreNum, timeNum, missesNum]) {
         num.scale.set(4, 4);
         num.updateHitbox();
         num.autoSize = false;
@@ -36,16 +36,14 @@ function create() {
     };
 
     //sonic life icon
-    add(lifeIcon = new FlxSprite(67, 820, Paths.image("hud/sonicLifeCounter-v2"))).camera = camSonic;
+    add(lifeIcon = new FlxSprite(scoreText.x, 820, Paths.image("hud/sonicLifeCounter-v2"))).camera = camSonic;
 
     //healthbar
-    add(healthNum = new FlxBitmapText(lifeIcon.x + 136, lifeIcon.y + 45, null, sonicHealthFont)).camera = camSonic;
+    add(healthNum = new FlxBitmapText(lifeIcon.x + 136, lifeIcon.y + 46, null, sonicHealthFont)).camera = camSonic;
     healthNum.autoSize = false;
     healthNum.alignment = 'left';
-    healthNum.scale.set(3.95, 3.95);
-    healthNum.updateHitbox();
 
-    for (num in [lifeIcon]) {
+    for (num in [lifeIcon, healthNum]) {
         num.scale.set(4, 4);
         num.updateHitbox();
     }
@@ -66,7 +64,7 @@ function postUpdate() {
     var curHealth = Math.floor(health * 50);
     timeNum.text = curTime;
     scoreNum.text = Math.max(songScore);
-    misesNum.text = misses;
+    missesNum.text = misses;
     healthNum.text = curHealth + "%";
 }
 

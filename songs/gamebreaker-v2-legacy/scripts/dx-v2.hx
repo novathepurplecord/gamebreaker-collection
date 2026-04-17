@@ -2,7 +2,7 @@ importScript("data/scripts/yoshi");
 importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/betterSustains");
-importScript("data/scripts/v2/dxMoveNotes");
+// importScript("data/scripts/v2/dxMoveNotes");
 
 var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -31,6 +31,7 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
+
     bf.scale.set(2, 2);
 
     camera.zoom = defaultCamZoom;
