@@ -10,9 +10,9 @@ var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-var dx = strumLines.members[0].characters[0];
-var dx2 = strumLines.members[0].characters[1];
-var dx3 = strumLines.members[0].characters[2];
+public var dx = strumLines.members[0].characters[0];
+public var dx2 = strumLines.members[0].characters[1];
+public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup

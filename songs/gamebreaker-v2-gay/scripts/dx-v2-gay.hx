@@ -11,9 +11,9 @@ var hotlineVHS = new CustomShader("hotlineVHS");
 var gayShader = new CustomShader("gay");
 var glitch = new CustomShader("glitch");
 
-var dx = strumLines.members[0].characters[0];
-var dxsad = strumLines.members[0].characters[1];
-var dx2 = strumLines.members[0].characters[2];
+public var dx = strumLines.members[0].characters[0];
+public var dxsad = strumLines.members[0].characters[1];
+public var dx2 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
@@ -81,6 +81,7 @@ function stepHit(_:Int) {
         case 127:
             dx.visible = !(dxsad.visible = true);
         case 278: 
+            camera.flash(FlxColor.RED, 1);
             dxsad.visible = !(dx2.visible = true);
             dx2.shader = glitch;
     }

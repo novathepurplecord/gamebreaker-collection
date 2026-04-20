@@ -70,7 +70,7 @@ function beatHit(_) if (_ >= 131) {
 }
 
 function postUpdate() {
-    var curTime = FlxStringUtil.formatTime(inst.time);
+    var curTime = FlxStringUtil.formatTime(Conductor.songPosition);
     var curHealth = Math.floor(health * 50);
     timeNum.text = curTime;
     if (curBeat <= 130) scoreNum.text = Math.max(songScore);

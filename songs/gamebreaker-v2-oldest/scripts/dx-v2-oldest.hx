@@ -9,9 +9,9 @@ var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 var dxShader = new CustomShader("dx");
 var hotlineVHS = new CustomShader("hotlineVHS");
 
-var dx = strumLines.members[0].characters[0];
-var dx2 = strumLines.members[0].characters[1];
-var dx3 = strumLines.members[0].characters[2];
+public var dx = strumLines.members[0].characters[0];
+public var dx2 = strumLines.members[0].characters[1];
+public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
@@ -100,13 +100,6 @@ function beatHit(_:Int) {
             targetDxBfScale = 1;
             bf.scrollFactor.y = 1.3;
     }
-}
-
-// event camera movement
-function onEvent(event) {
-    var e = event.event;
-    if (e.name != "Camera Movement") return;
-    targetBfScale = dxFocused ? 1 : targetDxBfScale;
 }
 
 function onNoteCreation(e) if (e.strumLineID == 0) {

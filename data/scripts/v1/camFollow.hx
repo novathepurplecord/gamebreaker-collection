@@ -1,15 +1,8 @@
 var offsetPico:Int = 10;
 var offsetDX:Int = 30;
 
-public var dxFocused = true;
-
-function onEvent(e) {
-    var e = e.event;
-    if (e.name != "Camera Movement") return;
-    dxFocused = e.params[0] == 0;
-}
-
 function postUpdate() {
+    var dxFocused = curCameraTarget == 0;
     var offset = dxFocused ? offsetDX : offsetPico;
     var character = dxFocused ? dad : boyfriend;
     

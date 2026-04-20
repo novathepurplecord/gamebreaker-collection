@@ -35,6 +35,11 @@ function beatHit(_:Int) {
             switch (_) {
                 case 72: for (obj in [bg, hill, trees]) FlxTween.color(obj, 2, 0xFFFFFFFF, 0xFFA89FFC, {ease: FlxEase.quadInOut});
                 case 204: for (obj in stage.stageSprites) obj.color = FlxColor.BLUE;
-            } 
+            }
+        case 'gamebreaker-v2-gay':
+            switch (_) {
+                case 30: for (obj in [bg, hill, trees]) FlxTween.color(obj, 0.5, 0xFFFFFFFF, 0xFFFFAAAA, {ease: FlxEase.quadInOut});
+                case 162: for (obj in stage.stageSprites) obj.color = 0xFFFF3333;
+            }
     }
 }
