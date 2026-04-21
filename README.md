@@ -19,7 +19,7 @@
 ## Credits:  
 - [novathepurplecord](https://www.youtube.com/@novathepurplecord) - Owner | Coder
 - [adriiv](https://www.youtube.com/@AdriiiV/videos) - Breaker Restorer Creator | Coder
-- [xtdw](https://github.com/xtdwg/) - Artist
+- [xtdw](https://www.youtube.com/@xtdwg) - Artist
 
 ## GAMEBREAKER Credits:
 - [Saster](https://x.com/sub0ru) - Creator of DX and Made the Song
