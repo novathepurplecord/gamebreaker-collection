@@ -20,7 +20,12 @@
 - [novathepurplecord](https://www.youtube.com/@novathepurplecord) - Owner | Coder
 - [adriiv](https://www.youtube.com/@AdriiiV/videos) - Breaker Restorer Creator | Coder
 - [xtdw](https://github.com/xtdwg/) - Artist
-- [Soulles DX Team](https://www.youtube.com/@SoullesDX) - Made Gamebreaker
-### Misc:
+
+## GAMEBREAKER Credits:
+- [Saster](https://x.com/sub0ru) - Creator of DX and Made the Song
+- [paigeypaper](https://x.com/paigeypaper) - Sprite Artist
+- [Raven](https://x.com/ray_ray478) - Background Artist
+
+### Special Thanks/Misc:
 - Jacobo, Arisoppo, [REDACTED], dx_is_real - Sprite Traces
 - dxv, son_15, thatonerat - cool guys
