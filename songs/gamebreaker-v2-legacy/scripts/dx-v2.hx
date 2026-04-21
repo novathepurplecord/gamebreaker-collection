@@ -16,7 +16,7 @@ public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    FlxG.cameras.insert(camChars, 2, false);
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
@@ -24,6 +24,7 @@ function create() {
     dx.camera = dx2.camera = dx3.camera = bf.camera = camChars;
     dx2.visible = dx3.visible = false;
     betterPicoSustains = true; // from betterSustains.hx
+    betterDXSustains = true;
 }
 
 var bfX:Int = 529;
@@ -31,19 +32,17 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
+    camera.zoom = defaultCamZoom; //phuck you cne
 
     bf.scale.set(2, 2);
-
-    camera.zoom = defaultCamZoom;
     cpuStrums.camera = camDX;
 
     for (i in [gf, comboGroup]) remove(i);
-
-    for (strums in cpuStrums.members) strums.x += 240;
+    for (strums in cpuStrums.members) strums.x += 220;
 }
 
 // camera tuffs update
-function update(elapsed:Float) {
+function update() {
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
 
@@ -93,10 +92,10 @@ function beatHit(_:Int) {
     // events stuff
     switch (_) {
         case 156:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
+            camera.addShader(hotlineVHS);
+            camera.flash(FlxColor.RED, 1);
         case 204:
-            camGame.flash(FlxColor.RED, 1);
+            camBG.flash(FlxColor.RED, 1);
             dxZoom = 0.6; // from camFollow-v2
             dxPos.y = 0; // from camFollow-v2
             targetDxBfScale = 1;
@@ -120,7 +119,7 @@ function onNoteCreation(e) {
 		note.animation.add("hold", [strumID % maxCol]);
 		note.animation.add("holdend", [maxCol + strumID % maxCol]);
 	} else {
-        var size = FlxG.random.int(27, 38);
+        var size = FlxG.random.int(27, 34);
 		note.loadGraphic(Paths.image('notes/dxNote'), true, size, size);
 		var maxCol = Math.floor(note.graphic.width / 23);
 		note.animation.add("scroll", [maxCol + strumID % maxCol]);

@@ -1,5 +1,5 @@
 <!DOCTYPE codename-engine-splashes>
-<splashes sprite="game/splashes/yoshi" alpha="0.7" scale="0.8"> 
+<splashes sprite="game/splashes/yoshi" alpha="0.8" scale="0.8"> 
 	<strum id="0"> <!-- LEFT -->
 		<anim name="note splash purple 1" anim="note splash purple 1" fps="24" x="-80" y="-32" />
 		<anim name="note splash purple 2" anim="note splash purple 2" fps="24" x="-80" y="-32" />

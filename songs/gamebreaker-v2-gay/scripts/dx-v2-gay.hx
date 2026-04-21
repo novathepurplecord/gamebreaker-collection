@@ -2,6 +2,7 @@ importScript("data/scripts/yoshi");
 importScript("data/scripts/gay/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
 importScript("data/scripts/gay/dxMoveNotes");
+importScript("data/scripts/betterSustains");
 
 var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
@@ -17,19 +18,14 @@ public var dx2 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
-    camChars.addShader(gayShader);
+    FlxG.cameras.insert(camChars, 2, false).addShader(gayShader);
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
-    camDX.addShader(gayShader);
-
-    camBG.addShader(gayShader);
-    camGame.addShader(gayShader);
+    for (cam in [camDX, camBG, camera]) cam.addShader(gayShader);
 
     // character cameras visibility etc
     dx.camera = dxsad.camera = dx2.camera = bf.camera = camChars;
     dxsad.visible = dx2.visible = false;
-    betterPicoSustains = true; // from betterSustains.hx
 }
 
 var bfX:Int = 529;
@@ -37,18 +33,17 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
-    bf.scale.set(2, 2);
+    camera.zoom = defaultCamZoom; //phuck you cne
 
-    camera.zoom = defaultCamZoom;
+    bf.scale.set(2.2, 2.2);
     cpuStrums.camera = camDX;
 
     for (i in [gf, comboGroup]) remove(i);
-
-    for (strums in cpuStrums.members) strums.x += 240;
+    for (strums in cpuStrums.members) strums.x += 220;
 }
 
 // camera tuffs update
-function update(elapsed:Float) {
+function update() {
     camDX.scroll.set(camera.scroll.x, camera.scroll.y);
     camDX.zoom = camera.zoom;
 
@@ -56,7 +51,7 @@ function update(elapsed:Float) {
     camChars.zoom = camera.zoom;
 }
 
-var targetDxBfScale:Int = 2;
+var targetDxBfScale:Int = 2.2;
 
 function postUpdate() {
     // shader itim
@@ -67,7 +62,7 @@ function postUpdate() {
     camera.zoom = CoolUtil.fpsLerp(camera.zoom, defaultCamZoom, 0.1);
 
     // scale things
-    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1, 0.1);
+    bfScale = CoolUtil.fpsLerp(bf.scale.x, curCameraTarget == 0 ? targetDxBfScale : 1.2, 0.1);
     bf.scale.set(bfScale, bfScale);
     bf.setPosition(bfX * bfScale, bfY * bfScale);
 }
@@ -81,7 +76,7 @@ function stepHit(_:Int) {
         case 127:
             dx.visible = !(dxsad.visible = true);
         case 278: 
-            camera.flash(FlxColor.RED, 1);
+            camChars.flash(FlxColor.RED, 1);
             dxsad.visible = !(dx2.visible = true);
             dx2.shader = glitch;
     }
@@ -92,11 +87,11 @@ var zoomTwn:FlxTween;
 
 function beatHit(_:Int) {
     // cool bounce 2
-    if (_ >= 140 && _ % 2 == 0) {
+    if (_ >= 131) {
         for (twn in [angleTwn, zoomTwn]) twn?.cancel();
         camHUD.zoom += 0.04;
-        camHUD.angle = (_ % 4 == 2) ? -20.75 : 20.75;
-        angleTwn = FlxTween.tween(camHUD, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
+        camChars.angle = (_ % 2 == 0) ? -5.75 : 5.75;
+        angleTwn = FlxTween.tween(camChars, {angle: 0}, 0.5, {ease: FlxEase.quadInOut});
         zoomTwn = FlxTween.tween(camHUD, {zoom: 1}, 0.75, {ease: FlxEase.quadOut});
     }
 
@@ -106,10 +101,10 @@ function beatHit(_:Int) {
     // events stuff
     switch (_) {
         case 131:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
+            camera.addShader(hotlineVHS);
+            camChars.flash(FlxColor.RED, 1);
         case 162:
-            camGame.flash(FlxColor.RED, 1);
+            camBG.flash(FlxColor.RED, 1);
             dxZoom = 0.6; // from camFollow-v2
             dxPos.y = 0; // from camFollow-v2
             targetDxBfScale = 1;

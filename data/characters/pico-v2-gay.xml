@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-character>
+<character x="30" sprite="gay/ipco" flipX="true" isPlayer="true" icon="pico">
+	<anim name="idle" anim="idle" x="9" y="-5"/>
+	<anim name="singLEFT" anim="left" x="190" y="54"/>
+	<anim name="singDOWN" anim="down" x="224" y="-41"/>
+	<anim name="singUP" anim="up" x="31" y="119"/>
+	<anim name="singRIGHT" anim="right" x="122" y="111"/>
+</character>

@@ -25,13 +25,12 @@ var bfX:Int = 529;
 var bfY:Int = 269;
 
 function postCreate() {
-    bf.scale.set(2, 2);
+    camera.zoom = defaultCamZoom; //phuck you cne
 
-    camera.zoom = defaultCamZoom;
+    bf.scale.set(2, 2);
     cpuStrums.camera = camDX;
 
-    for (obj in [gf, comboGroup]) remove(obj);
-
+    for (i in [gf, comboGroup]) remove(i);
     for (strums in cpuStrums.members) strums.x += 134;
 }
 
@@ -85,10 +84,10 @@ function beatHit(_:Int) {
 
     switch (_) {
         case 176:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
+            camera.addShader(hotlineVHS);
+            camera.flash(FlxColor.RED, 1);
         case 240:
-            camGame.flash(FlxColor.RED, 1);
+            camBG.flash(FlxColor.RED, 1);
     }
 }
 

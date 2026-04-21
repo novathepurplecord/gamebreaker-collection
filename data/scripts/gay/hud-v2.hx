@@ -16,8 +16,8 @@ function create() {
 
     //text (yellow one)
     add(scoreText = new FlxBitmapText(67, 67, 'YOU', sonicHudFont)).camera = camSonic;
-    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 64.5, 'ARE', sonicHudFont)).camera = camSonic;
-    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 64.5, 'GAY', sonicHudFont)).camera = camSonic;
+    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 44.5, 'ARE', sonicHudFont)).camera = camSonic;
+    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 44.5, 'GAY', sonicHudFont)).camera = camSonic;
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);

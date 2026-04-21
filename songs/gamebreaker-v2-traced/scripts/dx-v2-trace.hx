@@ -102,7 +102,7 @@ function beatHit(_:Int) {
     switch (_) {
         case 156:
             camDX.addShader(hotlineVHS);
-            camBG.flash(FlxColor.BLUE, 1);
+            camera.flash(FlxColor.BLUE, 1);
         case 204:
             camGame.flash(FlxColor.BLUE, 5);
             dxZoom = 0.5;

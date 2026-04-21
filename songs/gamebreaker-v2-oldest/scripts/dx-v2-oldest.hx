@@ -15,7 +15,7 @@ public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    FlxG.cameras.insert(camChars, 2, false);
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
@@ -29,14 +29,13 @@ var bfY:Int = 269;
 
 // post create bf pos, zoom, dx notes pos, etc
 function postCreate() {
-    bf.scale.set(2, 2);
+    camera.zoom = defaultCamZoom; //phuck you cne
 
-    camera.zoom = defaultCamZoom;
+    bf.scale.set(2, 2);
     cpuStrums.camera = camDX;
 
     for (i in [gf, comboGroup]) remove(i);
-
-    for (strums in cpuStrums.members) strums.x += 230;
+    for (strums in cpuStrums.members) strums.x += 220;
 }
 
 // camera stuff update
@@ -91,10 +90,10 @@ function beatHit(_:Int) {
     // events stuff
     switch (_) {
         case 156:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
+            camera.addShader(hotlineVHS);
+            camera.flash(FlxColor.RED, 1);
         case 204:
-            camGame.flash(FlxColor.RED, 1);
+            camBG.flash(FlxColor.RED, 1);
             dxZoom = 0.6; // from camFollow-v2
             dxPos.y = 0; // from camFollow-v2
             targetDxBfScale = 1;

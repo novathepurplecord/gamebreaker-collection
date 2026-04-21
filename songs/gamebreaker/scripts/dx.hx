@@ -13,7 +13,7 @@ var glitch = new CustomShader("glitch");
 var dx2 = strumLines.members[0].characters[1];
 
 function create() {
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    FlxG.cameras.insert(camChars, 2, false);
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
     camDX.addShader(dxShader);
 
@@ -25,14 +25,12 @@ var bfX:Int = 529;
 var bfY:Int = 269;
 
 function postCreate() {
-    bf.setPosition(bfX, bfY);
-    bf.scale.set(2, 2);
+    camera.zoom = defaultCamZoom; //phuck you cne
 
-    camera.zoom = defaultCamZoom;
+    bf.scale.set(2, 2);
     cpuStrums.camera = camDX;
 
     for (i in [gf, comboGroup]) remove(i);
-
     for (strums in cpuStrums.members) strums.x += 134;
 }
 
@@ -86,10 +84,10 @@ function beatHit(_:Int) {
 
     switch (_) {
         case 156:
-            camBG.addShader(hotlineVHS);
-            camBG.flash(FlxColor.RED, 1);
+            camera.addShader(hotlineVHS);
+            camera.flash(FlxColor.RED, 1);
         case 204:
-            camGame.flash(FlxColor.RED, 1);
+            camBG.flash(FlxColor.RED, 1);
     }
 }
 

@@ -1,9 +1,15 @@
 <!DOCTYPE codename-engine-character>
-<character x="95" y="205" sprite="v2/dx2" icon="dx2-v2">
+<character x="95" y="205" sprite="v2/dx2" icon="dx2-v2" applyStageMatrix="true">
 	<anim name="idle" anim="idle" loop="true"/>
 	<anim name="singLEFT" anim="singLEFT" x="190" y="-110"/>
 	<anim name="singDOWN" anim="singDOWN" x="-95" y="-165"/>
-	<anim name="singUP" anim="singUP-new" x="-20" y="155"/>
-	<anim name="singUP-alt" anim="singUP-alt" x="-20" y="155"/>
+	<anim name="singUP" anim="singUP-new" x="-11" y="155"/>
+	<anim name="singUP-alt" anim="singUP-alt" x="-11" y="155"/>
 	<anim name="singRIGHT" anim="singRIGHT" x="-90" y="-90"/>
+	<!-- doesnt work ok?? -->
+	<anim name="singLEFT-loop" anim="singLEFT" x="190" y="-110" loop="true" indices="6..13"/>
+	<anim name="singRIGHT-loop" anim="singRIGHT" x="-90" y="-90" loop="true" indices="6..13"/>
+	<anim name="singUP-loop" anim="singUP-new" x="-11" y="155" loop="true" indices="6..13"/>
+	<anim name="singDOWN-loop" anim="singDOWN" x="-95" y="-165" loop="true" indices="6..13"/>
+	<!-- <anim name="singUP-alt-loop" anim="singUP-alt" x="-11" y="155" loop="true" indices="0"/> -->
 </character>

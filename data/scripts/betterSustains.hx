@@ -7,14 +7,25 @@ function onPlayerMiss(e) if (PlayState.SONG.meta.name != 'gamebreaker' && PlaySt
 
 function onPlayerHit(e) if (betterPicoSustains) {
     if (e.note.isSustainNote) {
-        e.animCancelled = true;
-        bf.lastHit = Conductor.songPosition;
+        e.preventAnim();
+        e.character.lastHit = Conductor.songPosition;
     }
 }
 
-function onDadHit(e) if (betterDXSustains) {
+function onDadHit(e) if (betterDXSustains && e.animSuffix != '-alt') {
     if (e.note.isSustainNote) {
-        e.animCancelled = true;
-        dad.lastHit = Conductor.songPosition;
+        e.preventAnim();
+        e.character.lastHit = Conductor.songPosition;
     }
 }
+
+// function update() {
+//     for (i in strumLines.members) {
+//         for (char in i.characters) {
+//             if (char.isAnimFinished()) {
+//                 var name = char.getAnimName() + '-loop';
+//                 if (char.hasAnim(name)) char.playAnim(name, null, lastAnimContext);
+//             }
+//         }
+//     }
+// }

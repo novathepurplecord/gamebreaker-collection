@@ -11,9 +11,9 @@ function create() {
     FlxG.cameras.insert(camSonic, members.indexOf(camHUD), false).bgColor = 0;
 
     //text (yellow one)
-    add(scoreText = new FlxBitmapText(68, 67, 'SCORE', sonicHudFont)).camera = camSonic;
-    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 64.5, 'TIME', sonicHudFont)).camera = camSonic;
-    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 64.5, 'MISSES', sonicHudFont)).camera = camSonic;
+    add(scoreText = new FlxBitmapText(68, 68, 'SCORE', sonicHudFont)).camera = camSonic;
+    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 64, 'TIME', sonicHudFont)).camera = camSonic;
+    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 64, 'MISSES', sonicHudFont)).camera = camSonic;
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);

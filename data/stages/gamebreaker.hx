@@ -1,8 +1,8 @@
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
-function create() FlxG.cameras.insert(camBG, 0, false);
+function create() FlxG.cameras.insert(camBG, 1, false);
 
-function postCreate() bg.camera = trees.camera = hill.camera = camBG;
+function postCreate() pillar1.camera = pillar2.camera = floor.camera = camBG;
 
 function onStageXMLParsed(e) if (PlayState.SONG.meta.name == 'gamebreaker-v2-gay') e.stage.spritesParentFolder = 'stages/gaybreakin/';
 
@@ -13,7 +13,7 @@ function postUpdate() {
 
     treeScale = CoolUtil.fpsLerp(trees.scale.x, curCameraTarget == 0 ? 0.64 : 0.66, 0.05);
     trees.scale.set(treeScale, treeScale);
-    trees.y = treeScale * 143;
+    trees.y = treeScale * 134;
 
     camBG.scroll.set(camera.scroll.x, camera.scroll.y);
     camBG.zoom = camera.zoom;
