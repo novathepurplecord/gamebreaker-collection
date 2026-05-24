@@ -1,6 +1,6 @@
 # Breaker Restorer Deluxe: GAMEBREAKER COLLECTION
 > To install modfolder, press on the `Code` button, and select `Download ZIP`   
-> ~~**Codename Engine Actions Build required**~~ nvm don't use it, use 1.0.1 instead?? idk, i'm was makin it on that one build https://github.com/CodenameCrew/CodenameEngine/actions/runs/21634058945/artifacts/5359217486
+> **Codename Engine Actions Build required** ~~nvm don't use it, use 1.0.1 instead?? idk, i'm was makin it on that one build https://github.com/CodenameCrew/CodenameEngine/actions/runs/21634058945/artifacts/5359217486~~ ok it works now huh
 ### Semi-official Breaker Restorer continuation, a fan-made gamebreaker recreation project made by fans for fans
 ![logo](https://i.ibb.co/tp4dH1kx/logo.png)
 
