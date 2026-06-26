@@ -1,10 +1,7 @@
-importScript("data/scripts/yoshi");
-importScript("data/scripts/v2/hud-v2");
 importScript("data/scripts/v2/camFollow-v2");
-importScript("data/scripts/betterSustains");
 // importScript("data/scripts/v2/dxMoveNotes");
 
-var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
+// var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 var dxShader = new CustomShader("dx");
@@ -17,13 +14,12 @@ public var dx3 = strumLines.members[0].characters[2];
 function create() {
     // cameras setup
     FlxG.cameras.insert(camChars, 2, false);
-    FlxG.cameras.insert(camDX, 1, false).angle = 90;
-    camDX.addShader(dxShader);
+
+    windowResize(1280, 720, 1);
 
     // character cameras visibility etc
     dx.camera = dx2.camera = dx3.camera = bf.camera = camChars;
     dx2.visible = dx3.visible = false;
-    betterPicoSustains = true; // from betterSustains.hx
 }
 
 var bfX:Int = 529;
@@ -34,16 +30,16 @@ function postCreate() {
     camera.zoom = defaultCamZoom; //phuck you cne
 
     bf.scale.set(2, 2);
-    cpuStrums.camera = camDX;
+    // cpuStrums.camera = camDX;
 
     for (i in [gf, comboGroup]) remove(i);
-    for (strums in cpuStrums.members) strums.x += 220;
+    // for (strums in cpuStrums.members) strums.x += 220;
 }
 
 // camera tuffs update
 function update() {
-    camDX.scroll.set(camera.scroll.x, camera.scroll.y);
-    camDX.zoom = camera.zoom;
+    // camDX.scroll.set(camera.scroll.x, camera.scroll.y);
+    // camDX.zoom = camera.zoom;
 
     camChars.scroll.set(camera.scroll.x, camera.scroll.y);
     camChars.zoom = camera.zoom;
@@ -102,43 +98,45 @@ function beatHit(_:Int) {
     }
 }
 
-function onNoteCreation(e) {
-	if (e.note.strumLine == playerStrums) return;
-    e.cancel();
+// function onNoteCreation(e) {
+// 	if (e.note.strumLine == playerStrums) return;
+//     e.cancel();
 
-	var note = e.note;
-	var strumID = e.strumID;
+// 	var note = e.note;
+// 	var strumID = e.strumID;
 
-    var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.WHITE];
-    note.color = colors[FlxG.random.int(0, colors.length - 1)];
+//     var colors = [FlxColor.RED, FlxColor.BLUE, FlxColor.WHITE];
+//     note.color = colors[FlxG.random.int(0, colors.length - 1)];
 
-	if (e.note.isSustainNote) {
-		note.loadGraphic(Paths.image('notes/dxNote'), true, 7, 6);
-		var maxCol = Math.floor(note.graphic.width / 7);
-		note.animation.add("hold", [strumID % maxCol]);
-		note.animation.add("holdend", [maxCol + strumID % maxCol]);
-	} else {
-        var size = FlxG.random.int(27, 34);
-		note.loadGraphic(Paths.image('notes/dxNote'), true, size, size);
-		var maxCol = Math.floor(note.graphic.width / 23);
-		note.animation.add("scroll", [maxCol + strumID % maxCol]);
-	}
-	note.scale.set(3, 3);
-	note.updateHitbox();
-	note.antialiasing = false;
-}
+// 	if (e.note.isSustainNote) {
+// 		note.loadGraphic(Paths.image('notes/dxNote'), true, 7, 6);
+// 		var maxCol = Math.floor(note.graphic.width / 7);
+// 		note.animation.add("hold", [strumID % maxCol]);
+// 		note.animation.add("holdend", [maxCol + strumID % maxCol]);
+// 	} else {
+//         var size = FlxG.random.int(27, 34);
+// 		note.loadGraphic(Paths.image('notes/dxNote'), true, size, size);
+// 		var maxCol = Math.floor(note.graphic.width / 23);
+// 		note.animation.add("scroll", [maxCol + strumID % maxCol]);
+// 	}
+// 	note.scale.set(3, 3);
+// 	note.updateHitbox();
+// 	note.antialiasing = false;
+// }
 
-function onStrumCreation(e) if (e.player == 0) {
-    e.cancel();
+// function onStrumCreation(e) if (e.player == 0) {
+//     e.cancel();
 
-    var strum = e.strum;
-    strum.updateHitbox();
-    strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
-    strum.animation.add("static", [e.strumID]);
-    strum.animation.add("pressed", [e.strumID + 8], 12, false);
-    strum.animation.add("confirm", [e.strumID + 12, e.strumID + 16], 12, false);
-    strum.scale.set(1.5, 1.5);
-}
+//     var strum = e.strum;
+//     strum.updateHitbox();
+//     strum.loadGraphic(Paths.image('notes/dxNote'), true, 64, 64);
+//     strum.animation.add("static", [e.strumID]);
+//     strum.animation.add("pressed", [e.strumID + 8], 12, false);
+//     strum.animation.add("confirm", [e.strumID + 12, e.strumID + 16], 12, false);
+//     strum.scale.set(1.5, 1.5);
+// }
+
+function destroy() windowResize(1280, 960, 0.8);
 
 function onCountdown(e) e.cancel();
 

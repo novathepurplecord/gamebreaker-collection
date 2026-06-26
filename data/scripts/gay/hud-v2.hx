@@ -16,8 +16,8 @@ function create() {
 
     //text (yellow one)
     add(scoreText = new FlxBitmapText(67, 67, 'YOU', sonicHudFont)).camera = camSonic;
-    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 44.5, 'ARE', sonicHudFont)).camera = camSonic;
-    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 44.5, 'GAY', sonicHudFont)).camera = camSonic;
+    add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 55, 'ARE', sonicHudFont)).camera = camSonic;
+    add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 75, 'GAY', sonicHudFont)).camera = camSonic;
 
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);
@@ -70,7 +70,7 @@ function beatHit(_) if (_ >= 131) {
 }
 
 function postUpdate() {
-    var curTime = FlxStringUtil.formatTime(Conductor.songPosition);
+    var curTime = CoolUtil.getSizeString(Conductor.songPosition * 30);
     var curHealth = Math.floor(health * 50);
     timeNum.text = curTime;
     if (curBeat <= 130) scoreNum.text = Math.max(songScore);

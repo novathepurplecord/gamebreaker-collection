@@ -2,7 +2,7 @@ public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
 function create() FlxG.cameras.insert(camBG, 1, false);
 
-function postCreate() pillar1.camera = pillar2.camera = floor.camera = camBG;
+function postCreate() pillar1.camera = pillar2.camera = ground.camera = camBG;
 
 function onStageXMLParsed(e) if (PlayState.SONG.meta.name == 'gamebreaker-v2-gay') e.stage.spritesParentFolder = 'stages/gaybreakin/';
 

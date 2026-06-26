@@ -5,7 +5,7 @@
 	<sprite sprite="trees" name="trees" x="-913" y="134" scale="0.64" scrollx="0.6" scrolly="0.4"/>
 	<sprite sprite="pillar1" name="pillar1" x="-498" y="-1116" scroll="0.85"/>
 	<sprite sprite="pillar2" name="pillar2" x="700" y="-1257" scroll="0.9"/>
-	<sprite sprite="floor" name="floor" x="-552" y="304" scale="0.8"/>
+	<sprite sprite="ground" name="ground" x="-552" y="304" scale="0.8"/>
 	<dad x="0" y="0"/>
 	<boyfriend x="529" y="269"/>
 </stage>

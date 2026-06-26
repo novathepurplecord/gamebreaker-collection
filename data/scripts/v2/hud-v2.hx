@@ -18,7 +18,7 @@ function create() {
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);
         text.updateHitbox();
-        text.color = FlxColor.YELLOW;
+        text.color = 0xFFCFC00;
         text.autoSize = false;
         text.alignment = 'left';
     }
@@ -55,9 +55,9 @@ function postCreate() {
     scoreTxt.visible = accuracyTxt.visible = missesTxt.visible = false;
 }
 
-function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
+// function update() if (curBeat >= 140) camSonic.zoom = CoolUtil.fpsLerp(camSonic.zoom, 1, 0.045);
 
-function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
+// function beatHit(_) if (_ >= 140 && _ % 2 == 0) camSonic.zoom += 0.03;
 
 function postUpdate() {
     var curTime = FlxStringUtil.formatTime(inst.time * 0.001);
@@ -66,9 +66,17 @@ function postUpdate() {
     scoreNum.text = Math.max(songScore);
     missesNum.text = misses;
     healthNum.text = curHealth + "%";
+    if (curHealth <= 25) FlxFlicker.flicker(healthNum, 0, 0.15, true, false, () -> healthNum.color = 0xFFE80000, () -> {
+        healthNum.visible = true;
+        healthNum.color = (healthNum.color == 0xFFE80000) ? FlxColor.WHITE : 0xFFE80000;
+    });
+    else {
+        FlxFlicker.stopFlickering(healthNum);
+        healthNum.color = FlxColor.WHITE;
+    }
 }
 
-function onPlayerMiss() FlxFlicker.flicker(missesText, 0, 0.15, true, false, () -> missesText.color = FlxColor.RED, () -> {
+function onPlayerMiss() FlxFlicker.flicker(missesText, 0, 0.15, true, false, () -> missesText.color = 0xFFE80000, () -> {
     missesText.visible = true;
-    missesText.color = (missesText.color == FlxColor.RED) ? FlxColor.YELLOW : FlxColor.RED;
+    missesText.color = (missesText.color == 0xFFE80000) ? 0xFFCFC00 : 0xFFE80000;
 });

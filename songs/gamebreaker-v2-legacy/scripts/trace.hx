@@ -1,11 +1,10 @@
 // var traceSpr:FlxSprite;
 
 // function create() {
-//     add(traceSpr = new FlxSprite(0, 0, Paths.image('trace')));
+//     add(traceSpr = new FlxSprite(2, -2, Paths.image('trace2'))).camera = camSonic;
 //     traceSpr.setGraphicSize(FlxG.width);
 //     traceSpr.alpha = 0.6;
 //     traceSpr.updateHitbox();
-//     traceSpr.camera = camSonic;
 // }
 
 // function update() if (controls.NOTE_LEFT_P) traceSpr.visible = !traceSpr.visible;

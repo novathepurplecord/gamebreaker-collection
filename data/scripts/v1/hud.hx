@@ -17,7 +17,7 @@ function create() {
     for (text in [scoreText, timeText, missesText]) {
         text.scale.set(4, 4);
         text.updateHitbox();
-        text.color = FlxColor.YELLOW;
+        text.color = 0xFFCFC00;
         text.autoSize = false;
         text.alignment = 'left';
     }
@@ -39,7 +39,7 @@ function create() {
     add(lifeIcon = new FlxSprite(67, 812, Paths.image("hud/sonicLifeCounter"))).camera = camSonic;
 
     //healthbar
-    add(healthNum = new FlxBitmapText(lifeIcon.x + 95, lifeIcon.y + 38, null, sonicHudFont)).camera = camSonic;
+    add(healthNum = new FlxBitmapText(0, lifeIcon.y + 38, null, sonicHudFont)).camera = camSonic;
     healthNum.autoSize = false;
     healthNum.alignment = 'left';
 
@@ -47,6 +47,8 @@ function create() {
         num.scale.set(4, 4);
         num.updateHitbox();
     }
+
+    healthNum.x = lifeIcon.x + lifeIcon.width;
 }
 
 function postCreate() {
@@ -66,6 +68,11 @@ function postUpdate() {
     scoreNum.text = Math.max(songScore);
     misesNum.text = misses;
     healthNum.text = curHealth + "%";
+    if (curHealth <= 25) FlxFlicker.flicker(healthNum, 0, 0.4, true, false);
+    else {
+        FlxFlicker.stopFlickering(healthNum);
+        healthNum.visible = true;
+    }
 }
 
 function onPlayerMiss() FlxFlicker.flicker(missesText, 0, 0.4, true, false);

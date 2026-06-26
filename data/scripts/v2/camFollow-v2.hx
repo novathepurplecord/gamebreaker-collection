@@ -5,7 +5,7 @@ public var dxZoom:Float = 1.3;
 public var dxPos = {x: 420, y: 444};
 
 public var picoZoom:Float = 0.7;
-public var picoPos = {x: 520, y: 480};
+public var picoPos = {x: 510, y: 480};
 
 function postUpdate() {
     var dxFocused = curCameraTarget == 0;

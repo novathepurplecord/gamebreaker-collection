@@ -4,27 +4,12 @@ var mngr:Manager;
 
 function postCreate() {
     for (strum in [cpuStrums, playerStrums]) strum.notes.limit = 2000;
-
     add(mngr = new Manager());
     setupModifiers();
 }
 
 function setupModifiers() {
-    mngr.addModifier('CenterRotate');
-    mngr.addModifier('FieldRotate');
-    mngr.addModifier('OpponentSwap');
-    mngr.addModifier('Confusion');
-    mngr.addModifier('Invert');
-    mngr.addModifier('Infinite');
-    mngr.addModifier('Bounce');
-    mngr.addModifier('SchmovinTipsy');
-    mngr.addModifier('SchmovinDrunk');
-    mngr.addModifier('Scale');
-    mngr.addModifier('Transform');
-    mngr.addModifier('SawTooth');
-    mngr.addModifier('Drugged');
-    mngr.addModifier('EyeShape');
-
+    for (mod in ['CenterRotate', 'FieldRotate', 'OpponentSwap', 'Confusion', 'Invert', 'Infinite', 'Bounce', 'SchmovinTipsy', 'SchmovinDrunk', 'Scale', 'Transform', 'SawTooth', 'Drugged', 'EyeShape']) mngr.addModifier(mod);
     mngr.ease("alpha", 68, 1, 0, FlxEase.quadInOut, 1);
     
     mngr.set('bounceY', 68, -2.3, 1);
