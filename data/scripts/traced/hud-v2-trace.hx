@@ -6,12 +6,9 @@ var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
 var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2-test', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-:,");
 var sonicHealthFont = FunkinBitmapText.fromMono('images/hud/lifeFont-traced', "0123456789%");
 
-var xtdwgShader = new CustomShader("xtdwg");
-
 function create() {
     //new cam for hud
     FlxG.cameras.insert(camSonic, members.indexOf(camHUD), false).bgColor = 0;
-    camSonic.addShader(xtdwgShader);
 
     //text (yellow one)
     add(scoreText = new FlxBitmapText(130, 90, 'GAME', sonicHudFont)).camera = camSonic;

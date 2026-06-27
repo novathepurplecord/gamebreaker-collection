@@ -6,7 +6,7 @@ import funkin.menus.ui.effects.WaveEffect;
 import flixel.addons.display.FlxBackdrop;
 import openfl.display.BlendMode;
 
-static var gameBreakings:Array<String> = ['gamebreaker', 'gamebreaker-v2'];
+static var gameBreakings:Array<String> = ['v1', 'v2'];
 var realBreakings:FlxSpriteGroup;
 
 static var curSelected:String;

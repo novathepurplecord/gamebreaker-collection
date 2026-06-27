@@ -1,0 +1,12 @@
+<!DOCTYPE codename-engine-character>
+<character x="100" y="300" sprite="kade/pico" flipX="true" camx="-100" isPlayer="true" icon="pico" color="#B7D855" applyStageMatrix="true">
+	<anim name="idle" anim="Pico Idle Dance"/>
+	<anim name="singLEFT" anim="Pico Note Right" x="-10" y="19"/>
+	<anim name="singDOWN" anim="Pico Down Note" x="109" y="-39"/>
+	<anim name="singUP" anim="pico Up note" x="46" y="44"/>
+	<anim name="singRIGHT" anim="Pico NOTE LEFT" x="114" y="-10"/>
+	<anim name="singLEFTmiss" anim="Pico Note Right Miss" x="-10" y="19"/>
+	<anim name="singDOWNmiss" anim="Pico Down Note MISS" x="109" y="-39"/>
+	<anim name="singUPmiss" anim="pico Up note miss" x="46" y="44"/>
+	<anim name="singRIGHTmiss" anim="Pico NOTE LEFT miss" x="114" y="-10"/>
+</character>

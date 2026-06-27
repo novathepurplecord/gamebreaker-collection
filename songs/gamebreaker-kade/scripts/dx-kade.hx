@@ -1,5 +1,4 @@
-importScript("data/scripts/v2/camFollow-v2");
-// importScript("data/scripts/v2/dxMoveNotes");
+importScript("data/scripts/kade/camFollow");
 
 // var camDX = new FlxCamera(20, -360, 1460, 1380, 1);
 var camChars = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);

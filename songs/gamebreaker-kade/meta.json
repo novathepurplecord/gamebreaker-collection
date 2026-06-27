@@ -5,7 +5,7 @@
 	"difficulties": [
 		"normal"
 	],
-	"icon": "face",
+	"icon": "pico",
 	"coopAllowed": false,
 	"stepsPerBeat": 4,
 	"displayName": "kadebreaker",
