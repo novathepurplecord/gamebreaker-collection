@@ -16,8 +16,9 @@ public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
-    FlxG.cameras.insert(camChars, 2, false);
+    FlxG.cameras.insert(camChars, 2, false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
+    camDX.bgColor = 0;
     camDX.addShader(dxShader);
 
     // character cameras visibility etc

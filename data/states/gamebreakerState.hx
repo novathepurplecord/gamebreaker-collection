@@ -6,10 +6,8 @@ import funkin.menus.ui.effects.WaveEffect;
 import flixel.addons.display.FlxBackdrop;
 import openfl.display.BlendMode;
 
-static var gameBreakings:Array<String> = ['v1', 'v2'];
+var gameBreakings:Array<String> = ['v1', 'v2'];
 var realBreakings:FlxSpriteGroup;
-
-static var curSelected:String;
 
 var dxBackdropCam:FlxCamera = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
@@ -56,30 +54,24 @@ function create() {
 var targetVelDxBack:Int = -100;
 
 function update() {
-    if (FlxG.mouse.overlaps(optionsTxt)) {
-        optionsTxt.color = FlxColor.YELLOW;
-        if (FlxG.mouse.justPressed) FlxG.switchState(new OptionsMenu());
+    optionsTxt.color = FlxG.mouse.overlaps(optionsTxt) ? FlxColor.YELLOW : FlxColor.WHITE;
+    if (FlxG.mouse.overlaps(optionsTxt) && FlxG.mouse.justPressed) {
+        CoolUtil.playMenuSFX(2).persist = true;
+        FlxG.switchState(new OptionsMenu());
     }
-    else optionsTxt.color = FlxColor.WHITE;
 
     for (i => obj in realBreakings.members) {
-        if (FlxG.mouse.overlaps(obj)) {
-            obj.setGraphicSize(520, 420);
-            if (FlxG.mouse.justPressed) {
-                curSelected = gameBreakings[i];
-                superOpenSubState('substates/selectThingy');
-            }
-        }
-        else obj.setGraphicSize(500, 400);
+        obj.setGraphicSize(FlxG.mouse.overlaps(obj) ? 520 : 500, FlxG.mouse.overlaps(obj) ? 420 : 400);
+        if (FlxG.mouse.overlaps(obj) && FlxG.mouse.justPressed) superOpenSubState('substates/selectThingy', gameBreakings[i]);
     }
 
     if (controls.SWITCHMOD || controls.DEV_ACCESS) {
-		openSubState((controls.SWITCHMOD) ? new ModSwitchMenu() : new EditorPicker());
-		persistentUpdate = !(persistentDraw = true);
-	}
+        openSubState((controls.SWITCHMOD) ? new ModSwitchMenu() : new EditorPicker());
+        persistentUpdate = !(persistentDraw = true);
+    }
 
-    dxBackdrop.scale.x = 0.5 + Math.sin(Conductor.songPosition * 0.001) * 0.05;
-    dxBackdrop.scale.y = 0.5 + Math.cos(Conductor.songPosition * 0.001) * 0.05;
+    dxBackdrop.scale.x = 0.5 + FlxMath.fastSin(Conductor.songPosition * 0.001) * 0.05;
+    dxBackdrop.scale.y = 0.5 + FlxMath.fastCos(Conductor.songPosition * 0.001) * 0.05;
 
     targetVelDxBack = CoolUtil.fpsLerp(targetVelDxBack, -100, 0.1);
     dxBackBackdrop.velocity.set(targetVelDxBack, targetVelDxBack);
@@ -91,12 +83,13 @@ function update() {
 function beatHit(_:Int) {
     targetVelDxBack -= 300;
     (_ % 2 == 0) ? FlxG.camera.zoom += 0.02 : FlxG.camera.zoom -= 0.02;
+    // ignore % 1 == 0 its placeholder i know that it'll always be true
     if (_ >= 32 && _ % 1 == 0) FlxTween.tween(dxBackBackdrop, {angle: dxBackBackdrop.angle + 90}, (Conductor.stepCrochet * 0.001) * 8, {ease: FlxEase.sineOut});
 }
 
-
-function superOpenSubState(_:Int) {
-    openSubState(new ModSubState(_));
+function superOpenSubState(_:Int, stateData:String) {
+    openSubState(new ModSubState(_, stateData));
     CoolUtil.playMenuSFX(1);
+    FlxTween.cancelTweensOf(dxBackBackdrop);
     persistentUpdate = !(persistentDraw = true);
 }

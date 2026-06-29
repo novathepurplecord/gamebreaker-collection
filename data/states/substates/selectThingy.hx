@@ -3,61 +3,68 @@ import funkin.menus.FreeplaySonglist;
 import haxe.ds.StringMap;
 using StringTools;
 
-var freeplaySongList = FreeplaySonglist.get().songs; // array of song objects
-var songVersions:StringMap<Array<ChartMetaData>> = new StringMap(); // key = curVersion, value = array of song metadata objects
-var curSelectedType:Int = 0; // int for a type of song like legacy, kade, etc
-var curVersion:Array<Any>; // array of song metadata for the currently selected song
+var songs = FreeplaySonglist.get().songs; // array of song objects
+var songVersions:StringMap<Array<ChartMetaData>> = new StringMap(); // key = selectedVersion, value = array of song metadata objects
+var selectedIndex:Int = 0; // index of the currently selected song version
+var curVersionSongs:Array<ChartMetaData>; // array of song metadata for the selected version like [legacy, kade, etc]
 
 var selectCam = new FlxCamera();
 var wiggleShader = new CustomShader('wiggle');
 
-// curSelected from gamebreakerState.hx is cur selected preview like v1 or v2
+var selectedVersion:String = data; // data - var from gamebreakerState.hx, like v1 or v2
 
 function create() {
 	// fucking hell
-	songVersions.set('v1', []);
-	songVersions.set('v2', []);
+	if (!songVersions.exists("v1")) songVersions.set("v1", []);
+	if (!songVersions.exists("v2")) songVersions.set("v2", []);
     
-	for (song in freeplaySongList) songVersions.get(song.name.contains('gamebreaker-v2') ? "v2" : "v1").push(song);
+	for (song in songs) songVersions.get(song.name.contains('gamebreaker-v2') ? "v2" : "v1").push(song);
     
-    curVersion = songVersions.get(curSelected);
-    trace(songVersions);
+    curVersionSongs = songVersions.get(selectedVersion);
 
-	var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2', "ABCDEFGHIJKLM" + "NOPQRSTUVWXYZ" + "0123456789  % " + "+-:,");
+	var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-:,<>");
 	FlxG.cameras.add(selectCam, false).bgColor = 0;
 
-	add(selectBox = new FlxSprite().makeSolid(800, 100, FlxColor.BLACK)).screenCenter();
+	add(selectBox = new FlxSprite().makeSolid(860, 100, FlxColor.BLACK)).screenCenter();
 	selectBox.y -= 5;
 	selectBox.alpha = 0.8;
 	selectBox.camera = selectCam;
 
-	add(selectText = new FlxBitmapText(0, 0, 'VERSION:' + curVersion[curSelectedType].displayName.toUpperCase(), sonicHudFont)).screenCenter();
+	add(selectText = new FlxBitmapText(0, 0, '<VERSION:' + curVersionSongs[selectedIndex].displayName.toUpperCase() + '>', sonicHudFont)).screenCenter();
 	selectText.autoSize = false;
-	selectText.alignment = 'left';
-	selectText.scale.set(3.7, 3.7);
+	selectText.alignment = 'center';
+	selectText.scale.set(4, 4);
 	selectText.camera = selectCam;
 
 	selectCam.addShader(wiggleShader);
 }
 
 function update() {
+	var left = controls.LEFT_P;
+    var right = controls.RIGHT_P;
+    var scroll = FlxG.mouse.wheel;
+
+    if (left || right || scroll != 0) changeItem((left ? -1 : 0) + (right ? 1 : 0) - scroll);
+
+	if (controls.ACCEPT) enterSong(curVersionSongs[selectedIndex].name);
+
 	if (controls.BACK) {
+		CoolUtil.playMenuSFX(2);
 		close();
-		persistentUpdate = !(persistentDraw = true);
 	}
-
-	if (controls.LEFT_P || controls.RIGHT_P) {
-		CoolUtil.playMenuSFX(0);
-		curSelectedType = FlxMath.wrap(curSelectedType + (controls.LEFT_P ? -1 : 1), 0, curVersion.length - 1);
-		selectText.text = 'VERSION:' + curVersion[curSelectedType].displayName.toUpperCase();
-	}
-
-	if (controls.ACCEPT) enterSong(curVersion[curSelectedType].name);
 
 	wiggleShader.iTime = Conductor.songPosition * 0.001;
 }
 
+function changeItem(control:Int = 0) {
+    selectedIndex = FlxMath.wrap(selectedIndex + control, 0, curVersionSongs.length - 1);
+	selectText.text = '<VERSION:' + curVersionSongs[selectedIndex].displayName.toUpperCase() + '>';
+    trace("Current Selected: " + curVersionSongs[selectedIndex].name);
+    CoolUtil.playMenuSFX('0', 0.7);
+}
+
 function enterSong(songName:String) {
+	CoolUtil.playMenuSFX(1).persist = true;
 	PlayState.loadSong(songName, "normal", null, null);
 	FlxG.switchState(new PlayState());
 }

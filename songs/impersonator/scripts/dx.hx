@@ -13,8 +13,9 @@ var glitch = new CustomShader("glitch");
 var dx2 = strumLines.members[0].characters[1];
 
 function create() {
-    FlxG.cameras.insert(camChars, members.indexOf(camGame), false);
+    FlxG.cameras.insert(camChars, members.indexOf(camGame), false).bgColor = 0;
     FlxG.cameras.insert(camDX, 1, false).angle = 90;
+    camDX.bgColor = 0;
     camDX.addShader(dxShader);
 
     dad.camera = dx2.camera = bf.camera = camChars;

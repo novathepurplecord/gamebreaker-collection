@@ -4,7 +4,7 @@ import FunkinBitmapText;
 import funkin.backend.utils.DiscordUtil;
 
 public var camSonic = new FlxCamera(0, 0, 1920, 960, 1);
-var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-:,");
+var sonicHudFont = FunkinBitmapText.fromXNA('images/hud/hudFont-v2', "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'\"% +-:,<>");
 var sonicHealthFont = FunkinBitmapText.fromMono('images/hud/lifeFont', "0123456789%");
 
 var gayShader2 = new CustomShader("gay");
@@ -15,7 +15,7 @@ function create() {
     camSonic.addShader(gayShader2);
 
     //text (yellow one)
-    add(scoreText = new FlxBitmapText(67, 67, 'YOU', sonicHudFont)).camera = camSonic;
+    add(scoreText = new FlxBitmapText(67, 67, 'YOU<3', sonicHudFont)).camera = camSonic;
     add(timeText = new FlxBitmapText(scoreText.x, scoreText.y + 55, 'ARE', sonicHudFont)).camera = camSonic;
     add(missesText = new FlxBitmapText(scoreText.x, timeText.y + 75, 'GAY', sonicHudFont)).camera = camSonic;
 

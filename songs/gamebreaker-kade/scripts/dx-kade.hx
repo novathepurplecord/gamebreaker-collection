@@ -12,7 +12,7 @@ public var dx3 = strumLines.members[0].characters[2];
 
 function create() {
     // cameras setup
-    FlxG.cameras.insert(camChars, 2, false);
+    FlxG.cameras.insert(camChars, 2, false).bgColor = 0;
 
     windowResize(1280, 720, 1);
 

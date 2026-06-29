@@ -1,6 +1,6 @@
 public var camBG = new FlxCamera(0, 0, FlxG.width, FlxG.height, 1);
 
-function create() FlxG.cameras.insert(camBG, 1, false);
+function create() FlxG.cameras.insert(camBG, 1, false).bgColor = 0;
 
 function postCreate() pillar1.camera = pillar2.camera = ground.camera = camBG;
 
