@@ -7,14 +7,16 @@
 ## Breaks
 - Gamebreaker V1 `(by Nayu, Saster, Checkty, Joey)`
 - Gamebreaker V2 - Legacy `(by Saster, River, Awelie)`
-- Gamebreaker V2 - Oldest
+- Gamebreaker V2 - Oldest `(by Saster, River, Awelie)`
 - 2023Breaker | *broken rn*
+- KadeBreaker | *broken rn*
 - Gaybreakin `(by ????)`
 - Impersonator `(by Alezo)`
 
 ## Upcoming songs
-- Gamebreaker V2 `(by Saster, River, Awelie)`
-- Gamebreaker V1 wip3 `(by Nayu, Checkty, Joey)`
+- Gamebreaker V2 - Final `(by Saster, River, Awelie)`
+- Gamebreaker V1 - Scrapped Mix `(by Nayu, Saster, Checkty, Joey)`
+- Gamebreaker V1 - Wip3 `(by Nayu, Checkty, Joey)`
 
 ## Credits:  
 - [novathepurplecord](https://www.youtube.com/@novathepurplecord) - Owner | Coder
@@ -31,3 +33,4 @@
 - dxv, son_15, thatonerat - cool guys
 
 hi -xtdwg
+hello - nova
