@@ -19,10 +19,10 @@ public var dx2 = strumLines.members[0].characters[2];
 function create() {
     // cameras setup
     FlxG.cameras.insert(camChars, 2, false).bgColor = 0;
-    FlxG.cameras.insert(camDX, 1, false).angle = 90;
-    camDX.bgColor = 0;
+    FlxG.cameras.insert(camDX, 1, false).bgColor = 0;
+    camDX.angle = 90;
     camDX.addShader(dxShader);
-    for (cam in [camDX, camBG, camera]) cam.addShader(gayShader);
+    for (cam in [camDX, camBG, camChars, camera]) cam.addShader(gayShader);
 
     // character cameras visibility etc
     dx.camera = dxsad.camera = dx2.camera = bf.camera = camChars;
